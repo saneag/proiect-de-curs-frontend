@@ -1,0 +1,24 @@
+[
+    {
+        "publicLinks": [
+            {
+                "name": "home",
+                "path": "/",
+                "icon": "home"
+            }
+        ]
+    },
+    {
+        "dropdownLinks": [
+            {
+                "name": "edit profile",
+                "path": "/userProfile",
+                "icon": "settings"
+            },
+            {
+                "name": "my posts",
+                "path": "/myPosts"
+            }
+        ]
+    }
+]
