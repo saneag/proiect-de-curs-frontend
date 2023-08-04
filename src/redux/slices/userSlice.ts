@@ -244,7 +244,7 @@ export const deleteUserAvatar = createAsyncThunk(
     async (filePath: string) => {
         try {
             const fileName = filePath.split('uploads/')[1];
-            await axios.delete(`/user/userAvatar/${fileName}`, {
+            await axios.delete(`/user/${fileName}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,
                 },
