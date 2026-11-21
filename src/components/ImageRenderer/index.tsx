@@ -1,6 +1,6 @@
 import React from 'react';
 
-const apiOrigin = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api/hf').replace(/\/api\/hf\/?$/, '');
+const apiOrigin = (import.meta.env.VITE_API_URL || '/api/hf').replace(/\/api\/hf\/?$/, '');
 
 interface IProps {
     imageUrl: string;

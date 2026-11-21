@@ -75,9 +75,6 @@ export const logout = createAsyncThunk('auth/logout', async () => {
             refreshToken: Cookies.get('refreshToken'),
         });
 
-        Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
-
         return {
             isAuthenticated: false,
             status: response ? response.status : 500,
@@ -94,6 +91,9 @@ export const logout = createAsyncThunk('auth/logout', async () => {
             isAuthenticated: false,
             status: 500,
         };
+    } finally {
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
     }
 });
 
@@ -246,7 +246,7 @@ export const deleteUserAvatar = createAsyncThunk(
     async (filePath: string) => {
         try {
             const fileName = filePath.split('uploads/')[1]?.split('/').pop();
-            await axios.delete(`/user/${fileName}`, {
+            await axios.delete(`/user/userAvatar/${fileName}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,
                 },
@@ -310,14 +310,15 @@ export const userSlice = createSlice({
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.isAuthenticated = action.payload.isAuthenticated;
-            state.user = action.payload.user;
+            state.user = action.payload.user || ({} as IUserResponse);
         });
         builder.addCase(
             updateUser.fulfilled,
             (state, action: PayloadAction<any>) => {
                 state.status = action.payload.status;
-                state.user = action.payload.user;
-                state.isAuthenticated = true;
+                if (action.payload.status >= 200 && action.payload.status < 300) {
+                    state.user = action.payload.user;
+                }
             }
         );
     },

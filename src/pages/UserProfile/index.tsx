@@ -121,6 +121,7 @@ const UserProfile = () => {
                                 {!isEditMode && (
                                     <div className="absolute -right-5 top-0">
                                         <button
+                                            type="button"
                                             onClick={() => {
                                                 setIsEditMode(true);
                                             }}

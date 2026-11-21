@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './redux/store';
 
@@ -19,25 +19,8 @@ function App(): JSX.Element {
     );
 
     React.useEffect(() => {
-        dispatch(getUser());
+        dispatch(getUser()).finally(() => setIsLoading(false));
     }, [dispatch]);
-
-    React.useEffect(() => {
-        if (isAuthenticated) setIsLoading(false);
-    }, [isAuthenticated]);
-
-    React.useEffect(() => {
-        toast.error('Error with image loading', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'dark',
-        });
-    }, []);
 
     const routes = useRoutes(isAuthenticated);
 
@@ -45,7 +28,7 @@ function App(): JSX.Element {
         return <Components.Loading isServerError={true} />;
     }
 
-    if ((status <= 400 || status >= 500) && isLoading)
+    if (isLoading)
         return <Components.Loading isServerError={false} />;
 
     return (

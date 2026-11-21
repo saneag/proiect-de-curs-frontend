@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Paragraph } from '@tiptap/extension-paragraph';
 
 interface Props {
     content: string;
@@ -11,13 +10,14 @@ interface Props {
 const FormContent = ({ content, setContent }: Props) => {
     const editor = useEditor({
         extensions: [
-            StarterKit,
-            Paragraph.configure({
-                HTMLAttributes: {
-                    class:
-                        'block max-h-[50vh] min-h-[200px] w-full ' +
-                        'overflow-y-auto rounded-2xl bg-gray-500 p-3 ' +
-                        'text-xl text-white outline-none scrollbar',
+            StarterKit.configure({
+                paragraph: {
+                    HTMLAttributes: {
+                        class:
+                            'block max-h-[50vh] min-h-[200px] w-full ' +
+                            'overflow-y-auto rounded-2xl bg-gray-500 p-3 ' +
+                            'text-xl text-white outline-none scrollbar',
+                    },
                 },
             }),
         ],
