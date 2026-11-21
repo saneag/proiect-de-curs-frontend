@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://friendo-59ng.onrender.com/api/hf',
+    baseURL:
+        process.env.REACT_APP_API_URL || 'http://localhost:5000/api/hf',
 });
 
 export default instance;

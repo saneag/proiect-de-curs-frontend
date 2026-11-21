@@ -8,17 +8,17 @@ const UsersList = () => {
     const dispatch = useAppDispatch();
     const users = useAppSelector((state) => state.userReducer.users);
 
-    const fetchUsers = async () => {
+    const fetchUsers = React.useCallback(async () => {
         try {
             await dispatch(getUsers());
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [dispatch]);
 
     React.useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [fetchUsers]);
 
     return (
         <div className="hidden justify-self-center md:flex">

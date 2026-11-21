@@ -10,7 +10,7 @@ const UserProfileAsGuest = () => {
 
     React.useEffect(() => {
         dispatch(getUserByEmail(email as string));
-    }, [email]);
+    }, [dispatch, email]);
 
     const user = useAppSelector((state) => state.userReducer.visitedUser);
 

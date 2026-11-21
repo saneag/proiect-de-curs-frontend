@@ -1,5 +1,7 @@
 import React from 'react';
 
+const apiOrigin = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api/hf').replace(/\/api\/hf\/?$/, '');
+
 interface IProps {
     imageUrl: string;
     alt: string;
@@ -12,7 +14,7 @@ const ImageRenderer = ({ imageUrl, alt, className, type }: IProps) => {
 
     React.useEffect(() => {
         const img = new Image();
-        img.src = `https://friendo-59ng.onrender.com/${imageUrl}`;
+        img.src = `${apiOrigin}/${imageUrl}`;
         img.onload = () => {
             setIsImageLoaded(true);
         };
@@ -33,7 +35,7 @@ const ImageRenderer = ({ imageUrl, alt, className, type }: IProps) => {
         <>
             {isImageLoaded ? (
                 <img
-                    src={`https://friendo-59ng.onrender.com/${imageUrl}`}
+                    src={`${apiOrigin}/${imageUrl}`}
                     alt={alt}
                     className={className}
                 />

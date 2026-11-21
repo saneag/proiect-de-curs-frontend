@@ -29,16 +29,16 @@ const PostList = ({ children, className }: IPostList) => {
         (state) => state.postReducer.isPostCreated
     );
 
-    const fetchPosts = async (limit = 10) => {
+    const fetchPosts = React.useCallback(async (limit = 10) => {
         try {
             dispatch(resetPosts());
             await dispatch(getPosts({ limit, page: 1, search, email }));
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [dispatch, search, email]);
 
-    const fetchMorePosts = async () => {
+    const fetchMorePosts = React.useCallback(async () => {
         try {
             await dispatch(
                 getPosts({ limit: 10, page: page + 1, search, email })
@@ -47,12 +47,12 @@ const PostList = ({ children, className }: IPostList) => {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [dispatch, page, search, email]);
 
     React.useEffect(() => {
         fetchPosts();
         setPage(1);
-    }, [search]);
+    }, [fetchPosts]);
 
     React.useEffect(() => {
         if (isPostCreated) {
@@ -60,7 +60,7 @@ const PostList = ({ children, className }: IPostList) => {
             setPage(1);
             dispatch(setPostCreated(false));
         }
-    }, [isPostCreated]);
+    }, [isPostCreated, dispatch, fetchPosts]);
 
     return (
         <div

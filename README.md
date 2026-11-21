@@ -44,3 +44,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Deployment configuration
+
+Set `REACT_APP_API_URL` to the backend's public API base URL before building, for example `https://api.example.com/api/hf`. This value is included in the public browser bundle, so do not put secrets in it. MongoDB and Ubuntu setup notes are in the backend repository's `DEPLOYMENT.md`.

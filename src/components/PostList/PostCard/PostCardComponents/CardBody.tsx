@@ -1,6 +1,7 @@
 import React from 'react';
 import { Components } from 'components';
 import { PostContext } from '../index';
+import { sanitizePostHtml } from 'utils/sanitizePostHtml';
 
 const CardBody = () => {
     const { userPost } = React.useContext(PostContext);
@@ -17,7 +18,9 @@ const CardBody = () => {
                 } lg:p-0`}
             >
                 <span
-                    dangerouslySetInnerHTML={{ __html: userPost.content }}
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizePostHtml(userPost.content),
+                    }}
                     className="scrollbar max-h-[400px] w-full overflow-y-auto break-words text-lg"
                 ></span>
             </div>

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
@@ -213,7 +213,7 @@ export const deletePostImage = createAsyncThunk(
     'post/deletePostImage',
     async (filePath: string) => {
         try {
-            const fileName = filePath.split('uploads/')[1];
+            const fileName = filePath.split('uploads/')[1]?.split('/').pop();
             await axios.delete(`/post/postImage/${fileName}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,
@@ -234,7 +234,7 @@ export const reactToPost = createAsyncThunk(
     'post/reactToPost',
     async ({ postId, reactionType, email, comment }: any) => {
         try {
-            const response = await axios.patch(
+            await axios.patch(
                 `/react-to-post/${postId}/${reactionType}`,
                 { email, content: comment },
                 {

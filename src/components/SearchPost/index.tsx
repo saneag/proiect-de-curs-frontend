@@ -10,19 +10,20 @@ const SearchPost = ({ search, setSearch }: ISearchPost) => {
     const [inputValue, setInputValue] = React.useState('');
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const updateSearch = React.useCallback(
-        debounce((value: string) => {
-            setSearch(value);
-        }, 400),
-        []
+    const updateSearch = React.useMemo(
+        () => debounce((value: string) => setSearch(value), 400),
+        [setSearch]
     );
 
-    const handleInputChange = (e: any) => {
+    React.useEffect(() => () => updateSearch.cancel(), [updateSearch]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
         updateSearch(e.target.value);
     };
 
     const handleClearSearch = () => {
+        updateSearch.cancel();
         setSearch('');
         setInputValue('');
         inputRef.current?.focus();

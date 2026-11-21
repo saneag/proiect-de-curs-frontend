@@ -71,7 +71,9 @@ export const register = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async () => {
     try {
-        const response = await axios.post('/user/logout');
+        const response = await axios.post('/user/logout', {
+            refreshToken: Cookies.get('refreshToken'),
+        });
 
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
@@ -243,7 +245,7 @@ export const deleteUserAvatar = createAsyncThunk(
     'user/deleteUserAvatar',
     async (filePath: string) => {
         try {
-            const fileName = filePath.split('uploads/')[1];
+            const fileName = filePath.split('uploads/')[1]?.split('/').pop();
             await axios.delete(`/user/${fileName}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,
