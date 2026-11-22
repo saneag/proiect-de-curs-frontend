@@ -36,9 +36,9 @@ const CardHeader = () => {
                     {userPost.title}
                 </span>
             </div>
-            {userPost.creator.email === user.email && (
+            {userPost.creatorId === user.id && (
                 <div className="col-start-3 flex justify-end pr-1">
-                    <EditButtons postId={userPost._id} />
+                    <EditButtons postId={userPost.id} />
                 </div>
             )}
         </div>

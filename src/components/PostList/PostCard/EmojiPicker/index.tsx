@@ -16,38 +16,36 @@ const EmojiPicker = () => {
 
     const checkIfUserLiked = () => {
         return userPost.reactions.find(
-            (reaction) => reaction.email === user.email && reaction.like
+            (reaction) => reaction.userId === user.id && reaction.like
         );
     };
 
     const checkIfUserDisliked = () => {
         return userPost.reactions.find(
-            (reaction) => reaction.email === user.email && reaction.dislike
+            (reaction) => reaction.userId === user.id && reaction.dislike
         );
     };
 
     const handleLike = async () => {
         await dispatch(
             reactToPost({
-                postId: userPost._id,
+                postId: userPost.id,
                 reactionType: 'like',
-                email: user.email,
             })
         );
 
-        await dispatch(getPost({ postId: userPost._id }));
+        await dispatch(getPost({ postId: userPost.id }));
     };
 
     const handleDislike = async () => {
         await dispatch(
             reactToPost({
-                postId: userPost._id,
+                postId: userPost.id,
                 reactionType: 'dislike',
-                email: user.email,
             })
         );
 
-        await dispatch(getPost({ postId: userPost._id }));
+        await dispatch(getPost({ postId: userPost.id }));
     };
 
     return (

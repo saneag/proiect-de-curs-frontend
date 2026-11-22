@@ -19,14 +19,13 @@ const CardCommentAdd = () => {
 
         await dispatch(
             reactToPost({
-                postId: userPost._id,
+                postId: userPost.id,
                 reactionType: 'comment',
-                email: user.email,
                 comment,
             })
         );
 
-        await dispatch(getPost({ postId: userPost._id }));
+        await dispatch(getPost({ postId: userPost.id }));
 
         setComment('');
         setShowCommentInput(false);

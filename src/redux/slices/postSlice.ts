@@ -16,7 +16,7 @@ export const getPosts = createAsyncThunk(
     async ({ limit, page, search, email = '' }: Post) => {
         try {
             const response = await axios.get(
-                `/get-posts?limit=${limit}&page=${page}&search=${search}&email=${email}`,
+                `/get-posts?limit=${limit}&page=${page}&search=${encodeURIComponent(search)}&email=${encodeURIComponent(email)}`,
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
@@ -232,11 +232,11 @@ export const deletePostImage = createAsyncThunk(
 
 export const reactToPost = createAsyncThunk(
     'post/reactToPost',
-    async ({ postId, reactionType, email, comment }: any) => {
+    async ({ postId, reactionType, comment }: any) => {
         try {
             await axios.patch(
                 `/react-to-post/${postId}/${reactionType}`,
-                { email, content: comment },
+                { content: comment },
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
@@ -246,7 +246,6 @@ export const reactToPost = createAsyncThunk(
             return {
                 postId: postId,
                 reactionType: reactionType,
-                email: email,
                 comment: comment,
             };
         } catch (error) {
@@ -300,7 +299,7 @@ const postSlice = createSlice({
         });
         builder.addCase(getPost.fulfilled, (state: any, action) => {
             const postIndex = state.posts.findIndex(
-                (post: any) => post._id === action.payload.post._id
+                (post: any) => post.id === action.payload.post.id
             );
             state.posts[postIndex] = action.payload.post;
         });

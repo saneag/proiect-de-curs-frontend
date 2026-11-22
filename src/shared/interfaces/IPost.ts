@@ -21,12 +21,15 @@ export interface IPostLikeComment extends IPost {
 }
 
 export interface IPostExtended extends IPostLikeComment, IPostImage {
-    _id: string;
+    creatorId: string;
+    id: string;
     createdAt: string;
     updatedAt: string;
 }
 
 export interface IPostReaction {
+    id: string;
+    userId: string;
     email: string;
     like?: boolean;
     dislike?: boolean;

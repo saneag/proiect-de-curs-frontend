@@ -79,7 +79,7 @@ const PostList = ({ children, className }: IPostList) => {
                 className="flex flex-col gap-10"
             >
                 {posts.map((post: IPostExtended) => (
-                    <PostCard key={post._id} post={post} />
+                    <PostCard key={post.id} post={post} />
                 ))}
             </InfiniteScroll>
         </div>

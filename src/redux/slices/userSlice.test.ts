@@ -6,7 +6,7 @@ import api from 'services/axios.service';
 
 vi.mock('services/axios.service', () => ({ default: { post: vi.fn(), get: vi.fn(), patch: vi.fn(), delete: vi.fn() } }));
 
-const user = { firstName: 'Alice', lastName: 'Tester', email: 'alice@example.com', avatarUrl: '', description: '', createdAt: new Date(), updatedAt: new Date() };
+const user = { id: 'user-1', firstName: 'Alice', lastName: 'Tester', email: 'alice@example.com', avatarUrl: '', description: '', createdAt: new Date(), updatedAt: new Date() };
 
 describe('account operations', () => {
     it('logs in, stores tokens, and fetches the profile with authorization', async () => {

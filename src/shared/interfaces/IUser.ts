@@ -22,13 +22,14 @@ export interface IUserEdit extends IUser {
 }
 
 export interface IUserResponse extends IUserImage {
+    id: string;
     createdAt: Date;
     updatedAt: Date;
     description: string;
 }
 
 export interface IUserExtended extends IUserResponse {
-    _id: string;
+    id: string;
     friends: string[];
     friendRequests: string[];
     role: 'user' | 'moderator' | 'admin';
