@@ -92,6 +92,10 @@ The Dockerfile builds with Node.js 24 and copies `dist/` into Nginx. Nginx forwa
 
 ## Deploy on an Ubuntu server
 
+For our standalone PostgreSQL setup with both apps, use the
+[beginner installation/recovery guide](https://github.com/saneag/toggle-ctrl/blob/main/deploy/SETUP-FROM-ZERO.md)
+and [command cheatsheet](https://github.com/saneag/toggle-ctrl/blob/main/deploy/COMMANDS-CHEATSHEET.md).
+
 ### 1. Prepare both repositories
 
 Use Docker Engine with the Compose plugin, Git, Python 3, systemd, and `flock` on Ubuntu. No host Node.js installation is required for Docker builds. Keep the repositories beside each other:
