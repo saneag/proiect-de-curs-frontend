@@ -61,7 +61,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
             transition={{ duration: 0.3 }}
             onClick={() => setIsAddPostFormOpen(false)}
             className="fixed left-0 top-0 z-50 flex h-full w-full
-            justify-center bg-gray-700 bg-opacity-80 pt-10"
+            justify-center bg-gray-700/80 pt-10"
         >
             <div
                 className="flex h-fit w-10/12 flex-col content-center
@@ -89,7 +89,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
                             types={fileTypes}
                             multiple={false}
                             label="Drag & Drop your avatar here"
-                            classes="md:!min-w-[322px] !min-w-[200px]"
+                            classes="md:min-w-[322px]! min-w-[200px]!"
                         />
                     </div>
                     <div className="flex justify-center">

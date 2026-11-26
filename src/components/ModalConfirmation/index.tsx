@@ -26,7 +26,7 @@ const ModalConfirmation = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed left-0 top-0 z-20 flex h-screen w-full justify-center bg-gray-800 bg-opacity-90 pt-10"
+            className="fixed left-0 top-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
             onClick={() => {
                 setIsModalOpen(false);
             }}
@@ -49,7 +49,7 @@ const ModalConfirmation = ({
                 </div>
                 <div className="flex gap-3 self-end px-3 pt-3">
                     <button
-                        className="rounded bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
+                        className="rounded-sm bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
                         onClick={() => {
                             setIsEditMode(false);
                             setIsModalOpen(false);
@@ -59,7 +59,7 @@ const ModalConfirmation = ({
                         {confirm}
                     </button>
                     <button
-                        className="rounded bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+                        className="rounded-sm bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
                         onClick={() => {
                             setIsModalOpen(false);
                             setModalMessage('cancel');

@@ -169,13 +169,13 @@ const UserProfile = () => {
                         {isEditMode && (
                             <div className="mt-4 flex justify-center gap-3">
                                 <button
-                                    className="rounded bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
+                                    className="rounded-sm bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
                                     type="submit"
                                 >
                                     Submit
                                 </button>
                                 <button
-                                    className="rounded bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+                                    className="rounded-sm bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
                                     type="button"
                                     onClick={() =>
                                         handleCancel(setErrors, resetForm)

@@ -37,7 +37,7 @@ const SearchPost = ({ search, setSearch }: ISearchPost) => {
                     value={inputValue}
                     onChange={handleInputChange}
                     className="w-full rounded-md border-2 bg-white px-3 py-2 text-xl
-                text-black outline-none transition-all duration-300
+                text-black outline-hidden transition-all duration-300
                 focus:border-blue-500"
                     maxLength={50}
                     ref={inputRef}

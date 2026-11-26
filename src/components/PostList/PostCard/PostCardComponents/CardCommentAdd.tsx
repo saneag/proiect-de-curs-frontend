@@ -52,7 +52,7 @@ const CardCommentAdd = () => {
                         <textarea
                             className="scrollbar w-full resize-none rounded-xl
                             border-2 border-gray-500 bg-transparent p-2 text-xl
-                            shadow-md focus:outline-none"
+                            shadow-md focus:outline-hidden"
                             maxLength={300}
                             placeholder="Write a comment..."
                             onChange={(e) => setComment(e.target.value)}

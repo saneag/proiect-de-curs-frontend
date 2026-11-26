@@ -9,7 +9,7 @@ import { useRoutes } from './Routes';
 import './styles/App.scss';
 import { getUser } from './redux/slices/userSlice';
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
     const dispatch = useAppDispatch();
     const status = useAppSelector((state) => state.userReducer.userStatus);
     const [isLoading, setIsLoading] = React.useState(true);

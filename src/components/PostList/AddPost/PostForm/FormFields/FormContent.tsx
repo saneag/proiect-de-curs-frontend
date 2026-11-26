@@ -16,14 +16,14 @@ const FormContent = ({ content, setContent }: Props) => {
                         class:
                             'block max-h-[50vh] min-h-[200px] w-full ' +
                             'overflow-y-auto rounded-2xl bg-gray-500 p-3 ' +
-                            'text-xl text-white outline-none scrollbar',
+                            'text-xl text-white outline-hidden scrollbar',
                     },
                 },
             }),
         ],
         editorProps: {
             attributes: {
-                class: 'focus:outline-none',
+                class: 'focus:outline-hidden',
             },
         },
         content: content,

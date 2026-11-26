@@ -83,9 +83,9 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
             </button>
             {isUserInfoOpen && (
                 <div
-                    className="absolute top-[42px] z-10 w-44 divide-y
-                                divide-gray-100 rounded-lg bg-white shadow
-                                dark:divide-gray-600 dark:bg-gray-700 max-[768px]:right-0"
+                    className="absolute top-10.5 z-10 w-44 divide-y
+                                divide-gray-100 rounded-lg bg-white shadow-sm
+                                dark:divide-gray-600 dark:bg-gray-700 max-md:right-0"
                     ref={dropdownRef}
                 >
                     <div className="flex flex-col px-4 py-3 text-white">

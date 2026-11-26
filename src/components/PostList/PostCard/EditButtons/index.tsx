@@ -52,7 +52,7 @@ const EditButtons = ({ postId }: EditButtonsProps) => {
         <div className="relative">
             <Button
                 type="more_vert"
-                className="text-gray-600 drop-shadow-sm"
+                className="text-gray-600 drop-shadow-xs"
                 onClick={() => setShowEditButtons(!showEditButtons)}
                 ref={buttonRef}
             />
@@ -69,7 +69,7 @@ const EditButtons = ({ postId }: EditButtonsProps) => {
                     {/*/>*/}
                     <Button
                         type="delete"
-                        className="text-red-500 drop-shadow-sm"
+                        className="text-red-500 drop-shadow-xs"
                         name="Delete"
                         onClick={handleDeletePost}
                     />

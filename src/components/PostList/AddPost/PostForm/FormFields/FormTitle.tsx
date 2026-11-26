@@ -12,7 +12,7 @@ const FormTitle = ({ title, setTitle }: Props) => {
                 <input
                     type="text"
                     className="w-full rounded-2xl bg-gray-500 p-3
-                    text-xl text-white outline-none duration-300"
+                    text-xl text-white outline-hidden duration-300"
                     placeholder="Title"
                     value={title}
                     maxLength={50}

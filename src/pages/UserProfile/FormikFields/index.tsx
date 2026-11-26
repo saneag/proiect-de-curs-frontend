@@ -13,7 +13,7 @@ export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
                 id={value}
                 name={value}
                 type={type || 'text'}
-                className={`mb-4 w-80 rounded-md border-2 bg-white p-3 text-xl text-black outline-none 
+                className={`mb-4 w-80 rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden 
                 duration-300 md:w-72 ${disabled && 'cursor-default'}`}
                 disabled={disabled}
             />
@@ -39,7 +39,7 @@ export const FormikTextArea = ({ value, placeholder, disabled }: any) => {
                     name={value}
                     placeholder={placeholder}
                     className={`mb-4 min-h-[200px] w-80 resize-none rounded-md border-2
-              bg-white p-3 text-xl text-black outline-none duration-300 ${
+              bg-white p-3 text-xl text-black outline-hidden duration-300 ${
                   disabled && 'cursor-default'
               }
             `}

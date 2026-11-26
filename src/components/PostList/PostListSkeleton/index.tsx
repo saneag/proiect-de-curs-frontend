@@ -25,14 +25,14 @@ const PostListSkeleton = () => {
                     {Array.from({ length: 7 }).map((_, index) => (
                         <div
                             key={index}
-                            className="flex h-5 w-full rounded bg-gray-400"
+                            className="flex h-5 w-full rounded-sm bg-gray-400"
                         ></div>
                     ))}
                 </div>
                 <div className="flex w-full items-center rounded-xl bg-gray-400 md:w-7/12"></div>
             </div>
             <div className="flex items-center justify-between p-3">
-                <div className="h-7 w-32 rounded bg-gray-400"></div>
+                <div className="h-7 w-32 rounded-sm bg-gray-400"></div>
                 <div className="flex gap-2">
                     {Array.from({ length: 3 }).map((_, index) => (
                         <div
