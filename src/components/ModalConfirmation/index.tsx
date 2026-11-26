@@ -1,75 +1,75 @@
 import { motion } from 'framer-motion';
 
 interface IProps {
-    header: string;
-    body: string;
-    confirm: string;
-    cancel: string;
-    setIsModalOpen: (value: boolean) => void;
-    setIsEditMode: (value: boolean) => void;
-    setModalMessage: (value: 'ok' | 'cancel') => void;
+  header: string;
+  body: string;
+  confirm: string;
+  cancel: string;
+  setIsModalOpen: (value: boolean) => void;
+  setIsEditMode: (value: boolean) => void;
+  setModalMessage: (value: 'ok' | 'cancel') => void;
 }
 
 const ModalConfirmation = ({
-    header,
-    body,
-    confirm,
-    cancel,
-    setIsModalOpen,
-    setIsEditMode,
-    setModalMessage,
+  header,
+  body,
+  confirm,
+  cancel,
+  setIsModalOpen,
+  setIsEditMode,
+  setModalMessage,
 }: IProps) => {
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed top-0 left-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
+      onClick={() => {
+        setIsModalOpen(false);
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -100 }}
+        transition={{ duration: 0.3 }}
+        className="flex h-fit w-125 flex-col rounded-lg bg-white py-3"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div className="border-b p-3 pt-0">
+          <span className="text-2xl font-bold">{header}</span>
+        </div>
+        <div className="border-b p-3">
+          <span>{body}</span>
+        </div>
+        <div className="flex gap-3 self-end px-3 pt-3">
+          <button
+            className="rounded-sm bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
             onClick={() => {
-                setIsModalOpen(false);
+              setIsEditMode(false);
+              setIsModalOpen(false);
+              setModalMessage('ok');
             }}
-        >
-            <motion.div
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -100 }}
-                transition={{ duration: 0.3 }}
-                className="flex h-fit w-125 flex-col rounded-lg bg-white py-3"
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-            >
-                <div className="border-b p-3 pt-0">
-                    <span className="text-2xl font-bold">{header}</span>
-                </div>
-                <div className="border-b p-3">
-                    <span>{body}</span>
-                </div>
-                <div className="flex gap-3 self-end px-3 pt-3">
-                    <button
-                        className="rounded-sm bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
-                        onClick={() => {
-                            setIsEditMode(false);
-                            setIsModalOpen(false);
-                            setModalMessage('ok');
-                        }}
-                    >
-                        {confirm}
-                    </button>
-                    <button
-                        className="rounded-sm bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
-                        onClick={() => {
-                            setIsModalOpen(false);
-                            setModalMessage('cancel');
-                        }}
-                    >
-                        {cancel}
-                    </button>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
+          >
+            {confirm}
+          </button>
+          <button
+            className="rounded-sm bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+            onClick={() => {
+              setIsModalOpen(false);
+              setModalMessage('cancel');
+            }}
+          >
+            {cancel}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 };
 
 export default ModalConfirmation;

@@ -6,10 +6,10 @@ import UserProfileAsGuest from './UserProfile/UserProfileAsGuest';
 import MyPosts from './MyPosts';
 
 export const Pages = {
-    Home,
-    Groups,
-    Login,
-    UserProfile,
-    UserProfileAsGuest,
-    MyPosts,
+  Home,
+  Groups,
+  Login,
+  UserProfile,
+  UserProfileAsGuest,
+  MyPosts,
 };

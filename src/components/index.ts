@@ -9,12 +9,12 @@ import UsersList from './UsersList';
 import ImageRenderer from './ImageRenderer';
 
 export const Components = {
-    Header,
-    Loading,
-    TextEditor,
-    ModalConfirmation,
-    PostList,
-    AddPost,
-    UsersList,
-    ImageRenderer,
+  Header,
+  Loading,
+  TextEditor,
+  ModalConfirmation,
+  PostList,
+  AddPost,
+  UsersList,
+  ImageRenderer,
 };
