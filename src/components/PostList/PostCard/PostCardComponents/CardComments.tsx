@@ -12,14 +12,13 @@ const CardComments = () => {
         <motion.div
             className={`${userPost.numberOfComments > 0 && 'border-t-2'} ${
                 userPost.numberOfComments > 3 &&
-                'scrollbar h-60 overflow-y-scroll shadow-inner'
+                'h-60 scrollbar overflow-y-scroll shadow-inner'
             }`}
         >
             {userPost.comments.map((comment, index) => (
                 <div
                     key={index}
-                    className="flex flex-col border-b-2 border-dotted border-gray-400 px-2 py-3
-                    last:border-b-0"
+                    className="flex flex-col border-b-2 border-dotted border-gray-400 px-2 py-3 last:border-b-0"
                 >
                     <div className="flex flex-col gap-1">
                         <div className="flex">
@@ -31,7 +30,7 @@ const CardComments = () => {
                                     imageUrl={comment.creator.avatarUrl}
                                     type={'userAvatar'}
                                     alt={'userAvatar'}
-                                    className={'h-7 w-7 rounded-full'}
+                                    className={'size-7 rounded-full'}
                                 />
                                 <span>
                                     {comment.creator.firstName}{' '}

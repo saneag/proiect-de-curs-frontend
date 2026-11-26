@@ -12,7 +12,7 @@ const UsersList = () => {
         try {
             await dispatch(getUsers());
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }, [dispatch]);
 

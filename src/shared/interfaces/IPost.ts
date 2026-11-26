@@ -1,5 +1,5 @@
-import { IUserImage } from './IUser';
-import { IComment } from './IComment';
+import { type IUserImage } from './IUser';
+import { type IComment } from './IComment';
 
 export interface IPost {
     title: string;

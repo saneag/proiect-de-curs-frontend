@@ -6,13 +6,23 @@ import { fileURLToPath, URL } from 'node:url';
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     resolve: {
-        alias:
-            ['assets', 'components', 'pages', 'redux', 'services', 'shared', 'styles', 'utils'].map(
-                (name) => ({
-                    find: name === 'redux' ? /^redux\// : name,
-                    replacement: fileURLToPath(new URL('./src/' + name + (name === 'redux' ? '/' : ''), import.meta.url)),
-                })
+        alias: [
+            'assets',
+            'components',
+            'pages',
+            'redux',
+            'services',
+            'shared',
+            'utils',
+        ].map((name) => ({
+            find: name === 'redux' ? /^redux\// : name,
+            replacement: fileURLToPath(
+                new URL(
+                    './src/' + name + (name === 'redux' ? '/' : ''),
+                    import.meta.url,
+                ),
             ),
+        })),
     },
     server: {
         proxy: {

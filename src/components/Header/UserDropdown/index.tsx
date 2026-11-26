@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { IUserResponse } from 'shared/interfaces/IUser';
+import { type IUserResponse } from 'shared/interfaces/IUser';
 import { logout } from 'redux/slices/userSlice';
 import { Components } from 'components';
 
@@ -22,7 +22,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
     const navigate = useNavigate();
 
     const user: IUserResponse = useAppSelector(
-        (state) => state.userReducer.user
+        (state) => state.userReducer.user,
     );
     const [isUserInfoOpen, setIsUserInfoOpen] = React.useState<boolean>(false);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -63,29 +63,24 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                 }}
                 ref={dropdownButtonRef}
             >
-                <div className="h-9 w-9 rounded-full">
+                <div className="size-9 rounded-full">
                     <Components.ImageRenderer
                         imageUrl={user.avatarUrl}
                         type={'userAvatar'}
                         alt={''}
                         className={
-                            'h-full w-full rounded-full object-cover text-3xl'
+                            'size-full rounded-full object-cover text-3xl'
                         }
                     />
                 </div>
                 <span className="ml-1">{user.firstName}</span>
-                <span
-                    className="material-symbols-outlined relative top-0.5
-                                            text-sm text-white"
-                >
+                <span className="material-symbols-outlined relative top-0.5 text-sm text-white">
                     expand_more
                 </span>
             </button>
             {isUserInfoOpen && (
                 <div
-                    className="absolute top-10.5 z-10 w-44 divide-y
-                                divide-gray-100 rounded-lg bg-white shadow-sm
-                                dark:divide-gray-600 dark:bg-gray-700 max-md:right-0"
+                    className="absolute top-10.5 z-10 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm max-md:right-0 dark:divide-gray-600 dark:bg-gray-700"
                     ref={dropdownRef}
                 >
                     <div className="flex flex-col px-4 py-3 text-white">
@@ -94,7 +89,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                         </span>
                         <span className="truncate">{user.email}</span>
                     </div>
-                    <ul className="select-none px-4 py-3 text-white">
+                    <ul className="px-4 py-3 text-white select-none">
                         {dropdownLinks.map((link: Links) => {
                             return (
                                 <li key={link.path}>
@@ -116,7 +111,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                     </ul>
                     <button
                         type="button"
-                        className="block w-full select-none px-4 py-3 text-left text-white"
+                        className="block w-full px-4 py-3 text-left text-white select-none"
                         onClick={handleLogout}
                     >
                         <span>Sign out</span>

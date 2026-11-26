@@ -1,6 +1,6 @@
 import { ErrorMessage, Field } from 'formik';
 
-import { IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
+import { type IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
 
 export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
     return (
@@ -12,8 +12,7 @@ export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
                 id={value}
                 name={value}
                 type={type || 'text'}
-                className={`mb-4 w-80 rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden 
-                duration-300 md:w-72 ${disabled && 'cursor-default'}`}
+                className={`mb-4 w-80 rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden duration-300 md:w-72 ${disabled && 'cursor-default'}`}
                 disabled={disabled}
             />
             <ErrorMessage
@@ -47,15 +46,13 @@ export const FormikTextArea = ({
                     id={value}
                     name={value}
                     placeholder={placeholder}
-                    className={`mb-4 min-h-[200px] w-80 resize-none rounded-md border-2
-              bg-white p-3 text-xl text-black outline-hidden duration-300 ${
-                  disabled && 'cursor-default'
-              }
-            `}
+                    className={`mb-4 min-h-50 w-80 resize-none rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden duration-300 ${
+                        disabled && 'cursor-default'
+                    } `}
                     disabled={disabled}
                 />
                 {!disabled && (
-                    <span className="absolute bottom-0 right-2">
+                    <span className="absolute right-2 bottom-0">
                         <span
                             className={`${
                                 placeholder.length > 300 &&

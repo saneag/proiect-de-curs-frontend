@@ -8,10 +8,7 @@ const Loading = ({ isServerError }: ILoading) => {
     if (isServerError) {
         return (
             <div className="bg-black">
-                <div
-                    className="flex min-h-screen w-full flex-col flex-wrap
-            content-center justify-center text-center text-white"
-                >
+                <div className="flex min-h-screen w-full flex-col flex-wrap content-center justify-center text-center text-white">
                     <motion.div
                         initial={{
                             x: -200,
@@ -31,11 +28,7 @@ const Loading = ({ isServerError }: ILoading) => {
                             repeatType: 'mirror',
                         }}
                     >
-                        <span
-                            className="material-symbols-outlined bg-linear-to-br
-                             from-white to-gray-500 bg-clip-text text-9xl
-                             text-transparent"
-                        >
+                        <span className="material-symbols-outlined bg-linear-to-br from-white to-gray-500 bg-clip-text text-9xl text-transparent">
                             sentiment_very_dissatisfied
                         </span>
                     </motion.div>
@@ -52,7 +45,7 @@ const Loading = ({ isServerError }: ILoading) => {
             <div role="status">
                 <svg
                     aria-hidden="true"
-                    className="mr-2 inline h-32 w-32 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                    className="mr-2 inline size-32 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

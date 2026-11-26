@@ -14,7 +14,9 @@ interface ILinks {
 const NavbarLinks = ({ publicLinks }: ILinks) => {
     const location = useLocation();
 
-    const activeTab = publicLinks.some((link) => link.path === location.pathname)
+    const activeTab = publicLinks.some(
+        (link) => link.path === location.pathname,
+    )
         ? location.pathname
         : '';
 
@@ -37,7 +39,7 @@ const NavbarLinks = ({ publicLinks }: ILinks) => {
                             {activeTab === link.path && (
                                 <motion.div
                                     layoutId="active-border"
-                                    className="absolute flex h-full w-full flex-wrap content-end justify-center"
+                                    className="absolute flex size-full flex-wrap content-end justify-center"
                                 >
                                     <div className="h-10 w-full rounded-full bg-blue-900"></div>
                                 </motion.div>

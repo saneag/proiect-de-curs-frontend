@@ -1,4 +1,4 @@
-import { useEditor, EditorContent, Editor } from '@tiptap/react';
+import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 interface Props {
@@ -13,7 +13,7 @@ const FormContent = ({ content, setContent }: Props) => {
                 paragraph: {
                     HTMLAttributes: {
                         class:
-                            'block max-h-[50vh] min-h-[200px] w-full ' +
+                            'block max-h-[50vh] min-h-50 w-full ' +
                             'overflow-y-auto rounded-2xl bg-gray-500 p-3 ' +
                             'text-xl text-white outline-hidden scrollbar',
                     },

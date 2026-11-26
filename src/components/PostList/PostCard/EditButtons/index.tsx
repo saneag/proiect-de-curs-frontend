@@ -32,7 +32,7 @@ const EditButtons = ({ postId }: EditButtonsProps) => {
             if (
                 buttonRef.current &&
                 !buttonRef.current.contains(
-                    event.target as HTMLButtonElement
+                    event.target as HTMLButtonElement,
                 ) &&
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as HTMLDivElement)
@@ -58,8 +58,7 @@ const EditButtons = ({ postId }: EditButtonsProps) => {
             />
             {showEditButtons && (
                 <div
-                    className="absolute right-0 top-[25px] flex
-                    items-center gap-2 rounded-2xl bg-neutral-200 px-3 py-1"
+                    className="absolute top-6.25 right-0 flex items-center gap-2 rounded-2xl bg-neutral-200 px-3 py-1"
                     ref={dropdownRef}
                 >
                     {/*<Button*/}
@@ -91,7 +90,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 {name && <span className="block text-xs">{name}</span>}
             </button>
         );
-    }
+    },
 );
 Button.displayName = 'Button';
 

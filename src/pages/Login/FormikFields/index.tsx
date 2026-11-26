@@ -1,6 +1,6 @@
 import { ErrorMessage, Field } from 'formik';
 
-import { IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
+import { type IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
 
 export const FormikFields = ({
     value,
@@ -11,7 +11,7 @@ export const FormikFields = ({
         <>
             <label
                 htmlFor={value}
-                className="text-md font-medium capitalize text-gray-400 max-[640px]:text-sm"
+                className="text-md font-medium text-gray-400 capitalize max-sm:text-sm"
             >
                 {value}
             </label>
@@ -20,9 +20,7 @@ export const FormikFields = ({
                 name={value}
                 placeholder={placeholder}
                 type={type || 'text'}
-                className="mb-4 w-9/12 rounded-md bg-cyan-900 p-3 text-xl
-                text-white shadow-md shadow-cyan-700/50 outline-hidden
-                duration-300 hover:shadow-cyan-700 focus:shadow-cyan-700"
+                className="mb-4 w-9/12 rounded-md bg-cyan-900 p-3 text-xl text-white shadow-md shadow-cyan-700/50 outline-hidden duration-300 hover:shadow-cyan-700 focus:shadow-cyan-700"
             />
             <ErrorMessage
                 name={value}

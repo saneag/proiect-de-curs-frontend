@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from './redux/store';
 import { Components } from './components';
 import { useRoutes } from './Routes';
 
-import './styles/App.scss';
 import { getUser } from './redux/slices/userSlice';
 
 function App(): React.JSX.Element {
@@ -15,7 +14,7 @@ function App(): React.JSX.Element {
     const [isLoading, setIsLoading] = React.useState(true);
 
     const isAuthenticated = useAppSelector(
-        (state) => state.userReducer.isAuthenticated
+        (state) => state.userReducer.isAuthenticated,
     );
 
     React.useEffect(() => {
@@ -28,11 +27,10 @@ function App(): React.JSX.Element {
         return <Components.Loading isServerError={true} />;
     }
 
-    if (isLoading)
-        return <Components.Loading isServerError={false} />;
+    if (isLoading) return <Components.Loading isServerError={false} />;
 
     return (
-        <div className="App">
+        <div>
             <ToastContainer />
             {isAuthenticated && <Components.Header />}
             {routes}

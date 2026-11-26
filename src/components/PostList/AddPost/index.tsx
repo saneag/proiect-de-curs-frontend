@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
+import { type RootState } from 'redux/store';
 
 import PostForm from './PostForm';
 import { AnimatePresence } from 'framer-motion';
@@ -37,10 +37,7 @@ const AddPost = () => {
 
     return (
         <>
-            <div
-                className="max-[420px]:flex-col flex w-full items-center
-                gap-3 rounded-2xl bg-gray-500 p-2 md:w-[400px] 2xl:w-[600px]"
-            >
+            <div className="flex w-full items-center gap-3 rounded-2xl bg-gray-500 p-2 max-[420px]:flex-col md:w-100 2xl:w-150">
                 <div className="flex w-2/12 justify-center">
                     <div className="flex flex-wrap items-center justify-center rounded-full">
                         <Components.ImageRenderer
@@ -48,7 +45,7 @@ const AddPost = () => {
                             type={'userAvatar'}
                             alt={'No avatar'}
                             className={
-                                'flex h-14 w-14 items-center justify-center rounded-full object-cover text-5xl'
+                                'flex size-14 items-center justify-center rounded-full object-cover text-5xl'
                             }
                         />
                     </div>

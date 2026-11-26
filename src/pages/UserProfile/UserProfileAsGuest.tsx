@@ -15,24 +15,15 @@ const UserProfileAsGuest = () => {
     const user = useAppSelector((state) => state.userReducer.visitedUser);
 
     return (
-        <div
-            className="my-4 grid grid-cols-1 justify-items-center gap-y-6
-            px-4 md:grid-cols-3 md:gap-3 md:px-0"
-        >
-            <div
-                className="flex w-full flex-col gap-3 self-start md:sticky md:top-20
-                md:w-8/12"
-            >
+        <div className="my-4 grid grid-cols-1 justify-items-center gap-y-6 px-4 md:grid-cols-3 md:gap-3 md:px-0">
+            <div className="flex w-full flex-col gap-3 self-start md:sticky md:top-20 md:w-8/12">
                 <Components.ImageRenderer
                     imageUrl={user.avatarUrl}
                     type={'userAvatar'}
                     alt={'userAvatar'}
-                    className={'mx-auto h-32 w-32 rounded-full text-9xl'}
+                    className={'mx-auto size-32 rounded-full text-9xl'}
                 />
-                <div
-                    className="flex flex-col rounded-xl bg-gray-400 px-4
-                    py-3"
-                >
+                <div className="flex flex-col rounded-xl bg-gray-400 px-4 py-3">
                     <div className="flex flex-col">
                         <span className="text-2xl font-bold">Firstname </span>
                         <span className="text-xl">{user.firstName}</span>

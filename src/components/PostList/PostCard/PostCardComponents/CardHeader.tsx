@@ -20,7 +20,7 @@ const CardHeader = () => {
                         imageUrl={userPost.creator.avatarUrl}
                         type={'userAvatar'}
                         alt={''}
-                        className={`h-10 w-10 rounded-full text-4xl ${
+                        className={`size-10 rounded-full text-4xl ${
                             userPost.creator.avatarUrl !== '' && 'shadow-md'
                         }`}
                     />
@@ -32,7 +32,7 @@ const CardHeader = () => {
                 </Link>
             </div>
             <div className="col-span-3 row-start-2 flex justify-center text-center lg:col-span-1 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-                <span className="w-full text-ellipsis wrap-break-word text-2xl font-bold">
+                <span className="w-full text-2xl font-bold wrap-break-word text-ellipsis">
                     {userPost.title}
                 </span>
             </div>

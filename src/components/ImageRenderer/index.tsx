@@ -1,6 +1,9 @@
 import React from 'react';
 
-const apiOrigin = (import.meta.env.VITE_API_URL || '/api/hf').replace(/\/api\/hf\/?$/, '');
+const apiOrigin = (import.meta.env.VITE_API_URL || '/api/hf').replace(
+    /\/api\/hf\/?$/,
+    '',
+);
 
 interface IProps {
     imageUrl: string;
@@ -47,7 +50,7 @@ const ImageRenderer = ({ imageUrl, alt, className, type }: IProps) => {
                         </span>
                     ) : (
                         <div
-                            className={`flex h-full w-full items-center justify-center rounded-2xl bg-gray-200`}
+                            className={`flex size-full items-center justify-center rounded-2xl bg-gray-200`}
                         >
                             <span className="material-symbols-outlined text-6xl">
                                 no_photography

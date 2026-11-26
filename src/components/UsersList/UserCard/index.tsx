@@ -1,4 +1,4 @@
-import { IUserResponse } from '../../../shared/interfaces/IUser';
+import { type IUserResponse } from '../../../shared/interfaces/IUser';
 import { Components } from '../../index';
 
 interface IUserCard {
@@ -13,7 +13,7 @@ const UserCard = ({ user }: IUserCard) => {
                     imageUrl={user.avatarUrl}
                     type={'userAvatar'}
                     alt={'userAvatar'}
-                    className={'h-10 w-10 rounded-full text-4xl'}
+                    className={'size-10 rounded-full text-4xl'}
                 />
                 <div className="flex flex-col">
                     <span className="text-sm font-semibold">

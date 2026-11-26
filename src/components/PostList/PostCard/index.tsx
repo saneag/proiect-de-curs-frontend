@@ -1,7 +1,7 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { IPostExtended } from 'shared/interfaces/IPost';
+import { type IPostExtended } from 'shared/interfaces/IPost';
 
 import CardHeader from './PostCardComponents/CardHeader';
 import CardBody from './PostCardComponents/CardBody';

@@ -21,7 +21,7 @@ const CardBody = () => {
                     dangerouslySetInnerHTML={{
                         __html: sanitizePostHtml(userPost.content),
                     }}
-                    className="scrollbar max-h-[400px] w-full overflow-y-auto wrap-break-word text-lg"
+                    className="max-h-100 scrollbar w-full overflow-y-auto text-lg wrap-break-word"
                 ></span>
             </div>
             {userPost.image && (

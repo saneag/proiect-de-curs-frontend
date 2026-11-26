@@ -1,4 +1,4 @@
-import { IUserImage } from './IUser';
+import { type IUserImage } from './IUser';
 
 export interface IComment {
     postId: string;

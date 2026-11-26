@@ -32,7 +32,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
 
         if (image !== '') {
             await dispatch(
-                createPostWithImage({ title, content: removedClass, image })
+                createPostWithImage({ title, content: removedClass, image }),
             );
         } else {
             await dispatch(createBasicPost({ title, content: removedClass }));
@@ -61,19 +61,16 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setIsAddPostFormOpen(false)}
-            className="fixed left-0 top-0 z-50 flex h-full w-full
-            justify-center bg-gray-700/80 pt-10"
+            className="fixed top-0 left-0 z-50 flex size-full justify-center bg-gray-700/80 pt-10"
         >
             <div
                 role="presentation"
-                className="flex h-fit w-10/12 flex-col content-center
-                justify-center rounded-2xl bg-gray-300 md:w-[800px]"
+                className="flex h-fit w-10/12 flex-col content-center justify-center rounded-2xl bg-gray-300 md:w-200"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-end">
                     <button
-                        className="mr-3 mt-3 rounded-full bg-gray-500
-                    p-2 hover:bg-gray-600"
+                        className="mt-3 mr-3 rounded-full bg-gray-500 p-2 hover:bg-gray-600"
                         onClick={() => setIsAddPostFormOpen(false)}
                     >
                         <span className="material-symbols-outlined block text-white">
@@ -91,13 +88,12 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
                             types={fileTypes}
                             multiple={false}
                             label="Drag & Drop your avatar here"
-                            classes="md:min-w-[322px]! min-w-[200px]!"
+                            classes="md:min-w-80.5! min-w-50!"
                         />
                     </div>
                     <div className="flex justify-center">
                         <button
-                            className={`rounded-xl px-10 py-3
-                            text-white ${
+                            className={`rounded-xl px-10 py-3 text-white ${
                                 title === '' || content === ''
                                     ? 'cursor-not-allowed bg-blue-400'
                                     : 'bg-blue-500 hover:bg-blue-600'

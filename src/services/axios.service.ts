@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL:
-        import.meta.env.VITE_API_URL || '/api/hf',
+    baseURL: import.meta.env.VITE_API_URL || '/api/hf',
 });
 
 export default instance;

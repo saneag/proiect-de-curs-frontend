@@ -9,12 +9,17 @@ import userReducer from './redux/slices/userSlice';
 import postReducer from './redux/slices/postSlice';
 import api from './services/axios.service';
 
-vi.mock('./services/axios.service', () => ({ default: { post: vi.fn(), get: vi.fn() } }));
+vi.mock('./services/axios.service', () => ({
+    default: { post: vi.fn(), get: vi.fn() },
+}));
 vi.mock('./components', () => ({
     Components: {
         Header: () => <header>Navigation</header>,
-        Loading: ({ isServerError }: { isServerError: boolean }) =>
-            <div>{isServerError ? 'Server unavailable' : 'Loading session'}</div>,
+        Loading: ({ isServerError }: { isServerError: boolean }) => (
+            <div>
+                {isServerError ? 'Server unavailable' : 'Loading session'}
+            </div>
+        ),
     },
 }));
 vi.mock('./pages', () => ({
@@ -30,7 +35,13 @@ vi.mock('./pages', () => ({
 
 function renderApp(url = '/') {
     const store = configureStore({ reducer: { userReducer, postReducer } });
-    render(<Provider store={store}><MemoryRouter initialEntries={[url]}><App /></MemoryRouter></Provider>);
+    render(
+        <Provider store={store}>
+            <MemoryRouter initialEntries={[url]}>
+                <App />
+            </MemoryRouter>
+        </Provider>,
+    );
 }
 
 describe('session restoration and routing', () => {
@@ -38,27 +49,42 @@ describe('session restoration and routing', () => {
         renderApp('/userProfile');
         expect(await screen.findByText('Login page')).toBeInTheDocument();
         expect(api.post).not.toHaveBeenCalled();
-        expect(screen.queryByText('Error with image loading')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Error with image loading'),
+        ).not.toBeInTheDocument();
     });
 
     it('finishes loading when the API rejects a malformed session with HTTP 400', async () => {
         Cookies.set('refreshToken', 'invalid');
-        vi.mocked(api.post).mockRejectedValueOnce({ isAxiosError: true, response: { status: 400 } });
+        vi.mocked(api.post).mockRejectedValueOnce({
+            isAxiosError: true,
+            response: { status: 400 },
+        });
         renderApp();
         expect(await screen.findByText('Login page')).toBeInTheDocument();
     });
 
     it('shows a server error if session restoration fails with HTTP 500', async () => {
         Cookies.set('refreshToken', 'session');
-        vi.mocked(api.post).mockRejectedValueOnce({ isAxiosError: true, response: { status: 500 } });
+        vi.mocked(api.post).mockRejectedValueOnce({
+            isAxiosError: true,
+            response: { status: 500 },
+        });
         renderApp();
-        expect(await screen.findByText('Server unavailable')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Server unavailable'),
+        ).toBeInTheDocument();
     });
 
     it('restores a session and opens an authenticated deep link', async () => {
         Cookies.set('refreshToken', 'session');
-        vi.mocked(api.post).mockResolvedValueOnce({ data: { accessToken: 'renewed' } });
-        vi.mocked(api.get).mockResolvedValueOnce({ status: 200, data: { email: 'user@example.com' } });
+        vi.mocked(api.post).mockResolvedValueOnce({
+            data: { accessToken: 'renewed' },
+        });
+        vi.mocked(api.get).mockResolvedValueOnce({
+            status: 200,
+            data: { email: 'user@example.com' },
+        });
         renderApp('/userProfile');
         expect(await screen.findByText('Profile page')).toBeInTheDocument();
         expect(screen.getByText('Navigation')).toBeInTheDocument();

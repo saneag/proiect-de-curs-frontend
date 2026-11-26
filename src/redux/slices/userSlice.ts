@@ -1,11 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+    createAsyncThunk,
+    createSlice,
+    type PayloadAction,
+} from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
 import {
-    IUserEdit,
-    IUserRegister,
-    IUserResponse,
+    type IUserEdit,
+    type IUserRegister,
+    type IUserResponse,
 } from 'shared/interfaces/IUser';
 import { isAxiosError } from 'axios';
 
@@ -41,7 +45,7 @@ export const login = createAsyncThunk(
                 status: 401,
             };
         }
-    }
+    },
 );
 
 export const register = createAsyncThunk(
@@ -66,7 +70,7 @@ export const register = createAsyncThunk(
                 status: 500,
             };
         }
-    }
+    },
 );
 
 export const logout = createAsyncThunk('auth/logout', async () => {
@@ -163,7 +167,7 @@ export const getUserByEmail = createAsyncThunk(
                 visitedUser: {},
             };
         }
-    }
+    },
 );
 
 export const getUsers = createAsyncThunk('user/getUsers', async () => {
@@ -218,7 +222,7 @@ export const updateUser = createAsyncThunk(
                 isAuthenticated: true,
             };
         }
-    }
+    },
 );
 
 export const addUserAvatar = createAsyncThunk(
@@ -238,7 +242,7 @@ export const addUserAvatar = createAsyncThunk(
                 url: '',
             };
         }
-    }
+    },
 );
 
 export const deleteUserAvatar = createAsyncThunk(
@@ -259,7 +263,7 @@ export const deleteUserAvatar = createAsyncThunk(
                 status: 500,
             };
         }
-    }
+    },
 );
 
 const initialState = {
@@ -291,12 +295,12 @@ export const userSlice = createSlice({
                     isAuthenticated: boolean;
                     userStatus: number;
                     user: IUserResponse;
-                }>
+                }>,
             ) => {
                 state.user = action.payload.user;
                 state.userStatus = action.payload.userStatus;
                 state.isAuthenticated = action.payload.isAuthenticated;
-            }
+            },
         );
         builder.addCase(getUserByEmail.fulfilled, (state, action) => {
             state.visitedUser = action.payload.visitedUser;

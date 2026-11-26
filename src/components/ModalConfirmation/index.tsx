@@ -25,7 +25,7 @@ const ModalConfirmation = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed left-0 top-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
+            className="fixed top-0 left-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
             onClick={() => {
                 setIsModalOpen(false);
             }}
@@ -35,7 +35,7 @@ const ModalConfirmation = ({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -100 }}
                 transition={{ duration: 0.3 }}
-                className="flex h-fit w-[500px] flex-col rounded-lg bg-white py-3"
+                className="flex h-fit w-125 flex-col rounded-lg bg-white py-3"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}

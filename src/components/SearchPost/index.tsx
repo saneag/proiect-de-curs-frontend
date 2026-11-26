@@ -11,7 +11,7 @@ const SearchPost = ({ setSearch }: ISearchPost) => {
 
     const updateSearch = React.useMemo(
         () => debounce((value: string) => setSearch(value), 400),
-        [setSearch]
+        [setSearch],
     );
 
     React.useEffect(() => () => updateSearch.cancel(), [updateSearch]);
@@ -35,9 +35,7 @@ const SearchPost = ({ setSearch }: ISearchPost) => {
                     placeholder="Search..."
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="w-full rounded-md border-2 bg-white px-3 py-2 text-xl
-                text-black outline-hidden transition-all duration-300
-                focus:border-blue-500"
+                    className="w-full rounded-md border-2 bg-white px-3 py-2 text-xl text-black outline-hidden transition-all duration-300 focus:border-blue-500"
                     maxLength={50}
                     ref={inputRef}
                 />
@@ -45,8 +43,7 @@ const SearchPost = ({ setSearch }: ISearchPost) => {
                     <button
                         type="button"
                         aria-label="Clear search"
-                        className="material-symbols-outlined absolute right-2
-                    top-3 cursor-pointer"
+                        className="material-symbols-outlined absolute top-3 right-2 cursor-pointer"
                         onClick={handleClearSearch}
                     >
                         close

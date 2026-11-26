@@ -15,16 +15,16 @@ The frontend now uses **Vite instead of Create React App**. The matching [backen
 
 ## Technology and structure
 
-| Area | Technology |
-| --- | --- |
-| UI | React 18 and TypeScript |
-| Development and build | Vite |
-| Routing and state | React Router and Redux Toolkit |
-| Forms and HTTP | Formik, Yup, and Axios |
-| Styling | Sass, Tailwind CSS 3, and styled-components |
-| Rich text | Tiptap |
-| Tests | Vitest and React Testing Library |
-| Production | Nginx in Docker |
+| Area                  | Technology                                  |
+| --------------------- | ------------------------------------------- |
+| UI                    | React 18 and TypeScript                     |
+| Development and build | Vite                                        |
+| Routing and state     | React Router and Redux Toolkit              |
+| Forms and HTTP        | Formik, Yup, and Axios                      |
+| Styling               | Sass, Tailwind CSS 3, and styled-components |
+| Rich text             | Tiptap                                      |
+| Tests                 | Vitest and React Testing Library            |
+| Production            | Nginx in Docker                             |
 
 ```text
 src/components/   Shared UI, post cards, forms, and editor
@@ -71,15 +71,15 @@ For a separate API host, set `VITE_API_URL=https://api.example.com/api/hf` and c
 
 ## Commands and production build
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` / `npm start` | Start the Vite development server. |
-| `npm run typecheck` | Check TypeScript without generating files. |
-| `npm test` | Run Vitest once. |
-| `npm run test:watch` | Run Vitest in watch mode. |
-| `npm run build` | Check TypeScript and create the production bundle in `dist/`. |
-| `npm run preview` | Preview an existing build locally. |
-| `npm run prod` | Build and start a local Vite preview. |
+| Command                     | Purpose                                                       |
+| --------------------------- | ------------------------------------------------------------- |
+| `npm run dev` / `npm start` | Start the Vite development server.                            |
+| `npm run typecheck`         | Check TypeScript without generating files.                    |
+| `npm test`                  | Run Vitest once.                                              |
+| `npm run test:watch`        | Run Vitest in watch mode.                                     |
+| `npm run build`             | Check TypeScript and create the production bundle in `dist/`. |
+| `npm run preview`           | Preview an existing build locally.                            |
+| `npm run prod`              | Build and start a local Vite preview.                         |
 
 ```bash
 npm test

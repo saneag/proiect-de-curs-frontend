@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
 import { isAxiosError } from 'axios';
-import { IPostExtended } from 'shared/interfaces/IPost';
+import { type IPostExtended } from 'shared/interfaces/IPost';
 
 type Post = {
     limit: number;
@@ -22,7 +22,7 @@ export const getPosts = createAsyncThunk(
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
                     },
-                }
+                },
             );
 
             return {
@@ -45,7 +45,7 @@ export const getPosts = createAsyncThunk(
                 status: 500,
             };
         }
-    }
+    },
 );
 
 export const getPost = createAsyncThunk(
@@ -75,14 +75,14 @@ export const getPost = createAsyncThunk(
                 status: 500,
             });
         }
-    }
+    },
 );
 
 export const createBasicPost = createAsyncThunk(
     'post/createBasicPost',
     async (
         { title, content }: { title: string; content: string },
-        { rejectWithValue }
+        { rejectWithValue },
     ) => {
         try {
             const contentRemovedClass = content.replace(/ class=".*?"/g, '');
@@ -97,7 +97,7 @@ export const createBasicPost = createAsyncThunk(
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
                     },
-                }
+                },
             );
 
             return {
@@ -114,7 +114,7 @@ export const createBasicPost = createAsyncThunk(
                 status: 500,
             });
         }
-    }
+    },
 );
 
 export const createPostWithImage = createAsyncThunk(
@@ -125,7 +125,7 @@ export const createPostWithImage = createAsyncThunk(
             content,
             image,
         }: { title: string; content: string; image: string },
-        { rejectWithValue }
+        { rejectWithValue },
     ) => {
         try {
             const response = await axios.post(
@@ -139,7 +139,7 @@ export const createPostWithImage = createAsyncThunk(
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
                     },
-                }
+                },
             );
 
             return {
@@ -156,7 +156,7 @@ export const createPostWithImage = createAsyncThunk(
                 status: 500,
             });
         }
-    }
+    },
 );
 
 export const updatePost = createAsyncThunk(
@@ -172,7 +172,7 @@ export const updatePost = createAsyncThunk(
 
             return {};
         }
-    }
+    },
 );
 
 export const deletePost = createAsyncThunk(
@@ -195,7 +195,7 @@ export const deletePost = createAsyncThunk(
 
             return {};
         }
-    }
+    },
 );
 
 export const addPostImage = createAsyncThunk(
@@ -217,7 +217,7 @@ export const addPostImage = createAsyncThunk(
 
             return {};
         }
-    }
+    },
 );
 
 export const deletePostImage = createAsyncThunk(
@@ -238,7 +238,7 @@ export const deletePostImage = createAsyncThunk(
                 status: 500,
             };
         }
-    }
+    },
 );
 
 export const reactToPost = createAsyncThunk(
@@ -260,7 +260,7 @@ export const reactToPost = createAsyncThunk(
                     headers: {
                         Authorization: `Bearer ${Cookies.get('accessToken')}`,
                     },
-                }
+                },
             );
             return {
                 postId: postId,
@@ -274,7 +274,7 @@ export const reactToPost = createAsyncThunk(
 
             return {};
         }
-    }
+    },
 );
 
 const initialState = {
@@ -318,7 +318,7 @@ const postSlice = createSlice({
         });
         builder.addCase(getPost.fulfilled, (state, action) => {
             const postIndex = state.posts.findIndex(
-                (post) => post.id === action.payload.post.id
+                (post) => post.id === action.payload.post.id,
             );
             state.posts[postIndex] = action.payload.post;
         });

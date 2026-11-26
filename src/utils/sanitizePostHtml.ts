@@ -24,7 +24,11 @@ export const sanitizePostHtml = (html: string): string => {
 
         const element = node as Element;
         // Drop executable or embedded content, including its children.
-        if (['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'SVG', 'MATH'].includes(element.tagName)) {
+        if (
+            ['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'SVG', 'MATH'].includes(
+                element.tagName,
+            )
+        ) {
             return '';
         }
 

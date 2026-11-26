@@ -14,7 +14,7 @@ const Header = () => {
     return (
         <>
             <div className="h-16"></div>
-            <div className="fixed left-0 top-0 z-10 h-16 w-full bg-blue-800">
+            <div className="fixed top-0 left-0 z-10 h-16 w-full bg-blue-800">
                 <div className="grid h-full grid-cols-2 content-center justify-items-center md:grid-cols-3">
                     <div className="hidden md:block">
                         <NavLink to="/">

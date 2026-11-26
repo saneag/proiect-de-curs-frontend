@@ -22,7 +22,7 @@ const CardCommentAdd = () => {
                 postId: userPost.id,
                 reactionType: 'comment',
                 comment,
-            })
+            }),
         );
 
         await dispatch(getPost({ postId: userPost.id }));
@@ -45,19 +45,17 @@ const CardCommentAdd = () => {
                             imageUrl={user.avatarUrl}
                             type={'userAvatar'}
                             alt={'userAvatar'}
-                            className={'h-7 w-7 rounded-full'}
+                            className={'size-7 rounded-full'}
                         />
                     </div>
                     <div className="relative w-10/12">
                         <textarea
-                            className="scrollbar w-full resize-none rounded-xl
-                            border-2 border-gray-500 bg-transparent p-2 text-xl
-                            shadow-md focus:outline-hidden"
+                            className="scrollbar w-full resize-none rounded-xl border-2 border-gray-500 bg-transparent p-2 text-xl shadow-md focus:outline-hidden"
                             maxLength={300}
                             placeholder="Write a comment..."
                             onChange={(e) => setComment(e.target.value)}
                         />
-                        <span className="absolute -bottom-3 right-0">
+                        <span className="absolute right-0 -bottom-3">
                             {comment.length}/300
                         </span>
                     </div>

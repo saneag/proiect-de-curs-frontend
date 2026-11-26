@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, FormikHelpers } from 'formik';
+import { Formik, Form, type FormikHelpers } from 'formik';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { FileUploader } from 'react-drag-drop-files';
 import { AnimatePresence } from 'framer-motion';
@@ -36,7 +36,7 @@ const UserProfile = () => {
 
     const [avatar, setAvatar] = React.useState<string>(user.avatarUrl);
     const [prevAvatarUrl, setPrevAvatarUrl] = React.useState<string>(
-        user.avatarUrl
+        user.avatarUrl,
     );
     const fileTypes = ['JPG', 'PNG', 'JPEG'];
 
@@ -56,7 +56,7 @@ const UserProfile = () => {
                 email,
                 description,
                 avatarUrl: avatar,
-            })
+            }),
         );
     };
 
@@ -110,29 +110,29 @@ const UserProfile = () => {
                 {({ setErrors, resetForm, values }) => (
                     <Form className="flex flex-col gap-3">
                         <div className="flex w-full flex-col flex-wrap content-center items-center gap-3">
-                            <div className="relative flex h-32 w-32 rounded-full">
+                            <div className="relative flex size-32 rounded-full">
                                 {avatar !== '' ? (
                                     <Components.ImageRenderer
                                         imageUrl={avatar}
                                         alt={'No avatar'}
                                         className={
-                                            'h-full w-full rounded-full object-cover text-9xl'
+                                            'size-full rounded-full object-cover text-9xl'
                                         }
                                     />
                                 ) : (
-                                    <div className="flex h-full w-full flex-col items-center">
+                                    <div className="flex size-full flex-col items-center">
                                         <Components.ImageRenderer
                                             imageUrl={user.avatarUrl}
                                             type={'userAvatar'}
                                             alt={'No avatar'}
                                             className={
-                                                'h-full w-full rounded-full object-cover text-9xl'
+                                                'size-full rounded-full object-cover text-9xl'
                                             }
                                         />
                                     </div>
                                 )}
                                 {!isEditMode && (
-                                    <div className="absolute -right-5 top-0">
+                                    <div className="absolute top-0 -right-5">
                                         <button
                                             type="button"
                                             onClick={() => {
