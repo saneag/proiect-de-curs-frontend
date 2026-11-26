@@ -1,5 +1,4 @@
 import { ErrorMessage, Field } from 'formik';
-import React from 'react';
 
 import { IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
 
@@ -23,7 +22,7 @@ export const FormikFields = ({
                 type={type || 'text'}
                 className="mb-4 w-9/12 rounded-md bg-cyan-900 p-3 text-xl
                 text-white shadow-md shadow-cyan-700/50 outline-hidden
-                duration-300 hover:shadow-cyan-700/100 focus:shadow-cyan-700/100"
+                duration-300 hover:shadow-cyan-700 focus:shadow-cyan-700"
             />
             <ErrorMessage
                 name={value}

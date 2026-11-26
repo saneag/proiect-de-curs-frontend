@@ -1,4 +1,3 @@
-import React from 'react';
 import { IUserResponse } from '../../../shared/interfaces/IUser';
 import { Components } from '../../index';
 

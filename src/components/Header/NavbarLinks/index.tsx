@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -15,15 +14,9 @@ interface ILinks {
 const NavbarLinks = ({ publicLinks }: ILinks) => {
     const location = useLocation();
 
-    const [activeTab, setActiveTab] = React.useState<string>('');
-
-    React.useEffect(() => {
-        if (publicLinks.some((link) => link.path === location.pathname)) {
-            setActiveTab(location.pathname);
-        } else {
-            setActiveTab('');
-        }
-    }, [location.pathname, publicLinks]);
+    const activeTab = publicLinks.some((link) => link.path === location.pathname)
+        ? location.pathname
+        : '';
 
     return (
         <>
@@ -31,7 +24,6 @@ const NavbarLinks = ({ publicLinks }: ILinks) => {
                 return (
                     <div
                         key={link.path}
-                        onClick={() => setActiveTab(link.path)}
                         className="flex h-full flex-wrap content-center justify-center"
                     >
                         <NavLink

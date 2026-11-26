@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 interface Props {
@@ -57,7 +56,7 @@ const FormContent = ({ content, setContent }: Props) => {
     );
 };
 
-const MenuBar = ({ editor }: any) => {
+const MenuBar = ({ editor }: { editor: Editor | null }) => {
     if (!editor) return null;
 
     const editorButtons = [

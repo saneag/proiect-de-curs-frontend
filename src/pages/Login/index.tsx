@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { useAppDispatch } from 'redux/store';
 import { useNavigate } from 'react-router';
 
@@ -23,14 +23,17 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const handleClick = (setErrorsCallback: any, resetFormCallback: any) => {
+    const handleClick = (
+        setErrorsCallback: FormikHelpers<IUserRegister>['setErrors'],
+        resetFormCallback: FormikHelpers<IUserRegister>['resetForm']
+    ) => {
         setIsRegister(!isRegister);
         dispatch(resetStatus());
         setErrorsCallback({});
         resetFormCallback();
     };
 
-    const handleSubmit = (values: IUserRegister, actions: any) => {
+    const handleSubmit = (values: IUserRegister) => {
         validate(values).then(() => {});
     };
 
@@ -76,7 +79,7 @@ const Login = () => {
                     }}
                     validationSchema={isRegister ? RegisterSchema : LoginSchema}
                     onSubmit={(values: IUserRegister, actions) => {
-                        handleSubmit(values, actions);
+                        handleSubmit(values);
                         actions.setSubmitting(true);
                     }}
                 >
@@ -137,18 +140,18 @@ const Login = () => {
                                     type="submit"
                                     className="w-5/12 self-center
                                     rounded-full border-b-4 border-blue-900
-                                    bg-gradient-to-r from-blue-500 to-blue-800 p-2
+                                    bg-linear-to-r from-blue-500 to-blue-800 p-2
                                     text-xl text-white shadow-md shadow-blue-500
-                                    hover:bg-gradient-to-br"
+                                    hover:bg-linear-to-br"
                                 >
                                     {isRegister ? 'Register' : 'Login'}
                                 </button>
                                 <button
                                     type="button"
                                     className={`w-5/12 self-center rounded-full 
-                                    border-b-4 border-green-900 bg-gradient-to-l 
+                                    border-b-4 border-green-900 bg-linear-to-l 
                                     from-green-500 to-green-800 p-2 text-xl 
-                                    text-white hover:bg-gradient-to-bl ${
+                                    text-white hover:bg-linear-to-bl ${
                                         isRegister
                                             ? 'border-yellow-900 from-yellow-500 ' +
                                               'to-yellow-800'

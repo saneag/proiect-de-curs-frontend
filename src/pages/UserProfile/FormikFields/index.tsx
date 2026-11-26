@@ -1,4 +1,3 @@
-import React from 'react';
 import { ErrorMessage, Field } from 'formik';
 
 import { IFormikFieldsProps } from 'shared/interfaces/IFormikFieldsProps';
@@ -26,7 +25,17 @@ export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
     );
 };
 
-export const FormikTextArea = ({ value, placeholder, disabled }: any) => {
+interface IFormikTextAreaProps {
+    value: string;
+    placeholder: string;
+    disabled?: boolean;
+}
+
+export const FormikTextArea = ({
+    value,
+    placeholder,
+    disabled,
+}: IFormikTextAreaProps) => {
     return (
         <div className="flex flex-col">
             <label htmlFor={value} className="capitalize">

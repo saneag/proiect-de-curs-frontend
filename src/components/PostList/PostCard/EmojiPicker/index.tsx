@@ -85,12 +85,14 @@ const EmojiPicker = () => {
                 </span>
             </div>
             <div className="flex flex-col items-center">
-                <span
+                <button
+                    type="button"
+                    aria-label="Comments"
                     className="material-symbols-outlined cursor-pointer"
                     onClick={() => setShowCommentInput(!showCommentInput)}
                 >
                     comment
-                </span>
+                </button>
                 <span className="leading-3">{userPost.numberOfComments}</span>
             </div>
         </div>

@@ -23,8 +23,8 @@ const PostList = ({ children, className }: IPostList) => {
     const totalPostsNumber = useAppSelector(
         (state) => state.postReducer.totalPostsNumber
     );
-    const [page, setPage] = React.useState(1);
     const [search, setSearch] = React.useState('');
+    const page = Math.ceil(posts.length / 10);
     const isPostCreated = useAppSelector(
         (state) => state.postReducer.isPostCreated
     );
@@ -43,7 +43,6 @@ const PostList = ({ children, className }: IPostList) => {
             await dispatch(
                 getPosts({ limit: 10, page: page + 1, search, email })
             );
-            setPage((prev) => prev + 1);
         } catch (error) {
             console.log(error);
         }
@@ -51,13 +50,11 @@ const PostList = ({ children, className }: IPostList) => {
 
     React.useEffect(() => {
         fetchPosts();
-        setPage(1);
     }, [fetchPosts]);
 
     React.useEffect(() => {
         if (isPostCreated) {
             fetchPosts();
-            setPage(1);
             dispatch(setPostCreated(false));
         }
     }, [isPostCreated, dispatch, fetchPosts]);
@@ -68,7 +65,7 @@ const PostList = ({ children, className }: IPostList) => {
             flex-col gap-10 justify-self-center md:w-10/12 ${className}`}
         >
             <div className="flex flex-col items-center gap-5 md:flex-row md:flex-wrap xl:flex-nowrap">
-                <SearchPost search={search} setSearch={setSearch} />
+                <SearchPost setSearch={setSearch} />
                 {children}
             </div>
             <InfiniteScroll

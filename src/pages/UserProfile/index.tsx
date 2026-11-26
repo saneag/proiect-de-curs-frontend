@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { FileUploader } from 'react-drag-drop-files';
 import { AnimatePresence } from 'framer-motion';
@@ -15,20 +15,37 @@ import {
     updateUser,
 } from 'redux/slices/userSlice';
 
+interface IUserFormValues {
+    firstName: string;
+    lastName: string;
+    email: string;
+    description: string;
+}
+
+type FormHelpers = Pick<
+    FormikHelpers<IUserFormValues>,
+    'setErrors' | 'resetForm'
+>;
+
 const UserProfile = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.userReducer.user);
     const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
-    const [modalMessage, setModalMessage] = React.useState<
-        'ok' | 'cancel' | ''
-    >('');
-    const [rsForm, setRsForm] = React.useState<any>(null);
+    const [rsForm, setRsForm] = React.useState<FormHelpers | null>(null);
 
-    const [avatar, setAvatar] = React.useState<string>('');
+    const [avatar, setAvatar] = React.useState<string>(user.avatarUrl);
+    const [prevAvatarUrl, setPrevAvatarUrl] = React.useState<string>(
+        user.avatarUrl
+    );
     const fileTypes = ['JPG', 'PNG', 'JPEG'];
 
-    const handleSubmit = (values: any) => {
+    if (user.avatarUrl !== prevAvatarUrl) {
+        setPrevAvatarUrl(user.avatarUrl);
+        setAvatar(user.avatarUrl);
+    }
+
+    const handleSubmit = (values: IUserFormValues) => {
         const { firstName, lastName, email, description } = values;
 
         setIsEditMode(false);
@@ -43,35 +60,31 @@ const UserProfile = () => {
         );
     };
 
-    const handleCancel = (setErrors: any, resetForm: any) => {
+    const handleCancel = (helpers: FormHelpers) => {
         setIsModalOpen(true);
-        setRsForm({ setErrors, resetForm });
+        setRsForm(helpers);
     };
 
-    const handleChangeFile = async (e: any) => {
+    const handleModalMessage = (message: 'ok' | 'cancel') => {
+        if (message === 'ok') {
+            setIsEditMode(false);
+            setAvatar(user.avatarUrl);
+            rsForm?.resetForm();
+        }
+    };
+
+    const handleChangeFile = async (e: File | File[]) => {
+        const file = Array.isArray(e) ? e[0] : e;
         const formData = new FormData();
-        if (avatar && e.name !== avatar.split('uploads/')[1]) {
+        if (avatar && file.name !== avatar.split('uploads/')[1]) {
             dispatch(deleteUserAvatar(avatar));
         }
-        formData.append('avatar', e);
+        formData.append('avatar', file);
 
         const { payload } = await dispatch(addUserAvatar(formData));
         const { url } = payload as { url: string };
         setAvatar(url);
     };
-
-    React.useEffect(() => {
-        if (modalMessage === 'ok') {
-            setIsEditMode(false);
-            setModalMessage('');
-            setAvatar(user.avatarUrl);
-            rsForm.resetForm();
-        }
-    }, [modalMessage, rsForm, user.avatarUrl]);
-
-    React.useEffect(() => {
-        setAvatar(user.avatarUrl);
-    }, [user.avatarUrl]);
 
     return (
         <div className="flex justify-center p-3">
@@ -178,7 +191,7 @@ const UserProfile = () => {
                                     className="rounded-sm bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
                                     type="button"
                                     onClick={() =>
-                                        handleCancel(setErrors, resetForm)
+                                        handleCancel({ setErrors, resetForm })
                                     }
                                 >
                                     Cancel
@@ -197,7 +210,7 @@ const UserProfile = () => {
                         cancel="Cancel"
                         setIsModalOpen={setIsModalOpen}
                         setIsEditMode={setIsEditMode}
-                        setModalMessage={setModalMessage}
+                        setModalMessage={handleModalMessage}
                     />
                 )}
             </AnimatePresence>

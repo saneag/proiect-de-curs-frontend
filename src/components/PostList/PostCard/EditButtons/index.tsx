@@ -79,11 +79,8 @@ const EditButtons = ({ postId }: EditButtonsProps) => {
     );
 };
 
-const Button = React.forwardRef(
-    (
-        { type, name = '', className, onClick }: ButtonProps,
-        ref: React.Ref<HTMLButtonElement>
-    ) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ type, name = '', className, onClick }, ref) => {
         return (
             <button
                 className={`${className} p-0.5`}
@@ -96,5 +93,6 @@ const Button = React.forwardRef(
         );
     }
 );
+Button.displayName = 'Button';
 
 export default EditButtons;

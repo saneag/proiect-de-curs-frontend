@@ -233,7 +233,7 @@ export const addUserAvatar = createAsyncThunk(
             return {
                 url: response.data.url,
             };
-        } catch (error) {
+        } catch {
             return {
                 url: '',
             };
@@ -254,7 +254,7 @@ export const deleteUserAvatar = createAsyncThunk(
             return {
                 url: '',
             };
-        } catch (error) {
+        } catch {
             return {
                 status: 500,
             };
@@ -312,15 +312,12 @@ export const userSlice = createSlice({
             state.isAuthenticated = action.payload.isAuthenticated;
             state.user = action.payload.user || ({} as IUserResponse);
         });
-        builder.addCase(
-            updateUser.fulfilled,
-            (state, action: PayloadAction<any>) => {
-                state.status = action.payload.status;
-                if (action.payload.status >= 200 && action.payload.status < 300) {
-                    state.user = action.payload.user;
-                }
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.status = action.payload.status;
+            if (action.payload.status >= 200 && action.payload.status < 300) {
+                state.user = action.payload.user as IUserResponse;
             }
-        );
+        });
     },
 });
 

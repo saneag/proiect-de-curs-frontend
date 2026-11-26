@@ -41,12 +41,13 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
         dispatch(setPostCreated(true));
     };
 
-    const handleChangeFile = async (e: any) => {
+    const handleChangeFile = async (e: File | File[]) => {
+        const file = Array.isArray(e) ? e[0] : e;
         const formData = new FormData();
-        if (image && e.name !== image.split('uploads/')[1]) {
+        if (image && file.name !== image.split('uploads/')[1]) {
             await dispatch(deletePostImage(image));
         }
-        formData.append('postImage', e);
+        formData.append('postImage', file);
 
         const { payload } = await dispatch(addPostImage(formData));
         const { url } = payload as { url: string };
@@ -64,6 +65,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
             justify-center bg-gray-700/80 pt-10"
         >
             <div
+                role="presentation"
                 className="flex h-fit w-10/12 flex-col content-center
                 justify-center rounded-2xl bg-gray-300 md:w-[800px]"
                 onClick={(e) => e.stopPropagation()}

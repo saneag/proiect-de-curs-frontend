@@ -94,10 +94,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                         </span>
                         <span className="truncate">{user.email}</span>
                     </div>
-                    <ul
-                        className="select-none px-4 py-3 text-white"
-                        onClick={() => setIsUserInfoOpen(false)}
-                    >
+                    <ul className="select-none px-4 py-3 text-white">
                         {dropdownLinks.map((link: Links) => {
                             return (
                                 <li key={link.path}>
@@ -109,6 +106,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                                                 : link.path
                                         }
                                         className="block capitalize"
+                                        onClick={() => setIsUserInfoOpen(false)}
                                     >
                                         {link.name}
                                     </Link>
@@ -116,13 +114,13 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                             );
                         })}
                     </ul>
-                    <div
-                        className="select-none px-4 py-3 text-white"
-                        role="button"
+                    <button
+                        type="button"
+                        className="block w-full select-none px-4 py-3 text-left text-white"
                         onClick={handleLogout}
                     >
                         <span>Sign out</span>
-                    </div>
+                    </button>
                 </div>
             )}
         </div>

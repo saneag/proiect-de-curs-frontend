@@ -2,11 +2,10 @@ import React from 'react';
 import debounce from 'lodash.debounce';
 
 interface ISearchPost {
-    search: string;
     setSearch: (search: string) => void;
 }
 
-const SearchPost = ({ search, setSearch }: ISearchPost) => {
+const SearchPost = ({ setSearch }: ISearchPost) => {
     const [inputValue, setInputValue] = React.useState('');
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -43,13 +42,15 @@ const SearchPost = ({ search, setSearch }: ISearchPost) => {
                     ref={inputRef}
                 />
                 {inputValue && (
-                    <span
+                    <button
+                        type="button"
+                        aria-label="Clear search"
                         className="material-symbols-outlined absolute right-2
                     top-3 cursor-pointer"
                         onClick={handleClearSearch}
                     >
                         close
-                    </span>
+                    </button>
                 )}
             </div>
         </div>

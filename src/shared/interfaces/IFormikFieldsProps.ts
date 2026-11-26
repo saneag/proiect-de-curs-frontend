@@ -2,7 +2,7 @@ export interface IFormikFieldsProps {
     value: string;
     placeholder?: string;
     type?: string;
-    errors?: any;
-    touched?: any;
+    errors?: Record<string, string>;
+    touched?: Record<string, boolean>;
     disabled?: boolean;
 }

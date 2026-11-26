@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 interface ILoading {
@@ -33,7 +32,7 @@ const Loading = ({ isServerError }: ILoading) => {
                         }}
                     >
                         <span
-                            className="material-symbols-outlined bg-gradient-to-br
+                            className="material-symbols-outlined bg-linear-to-br
                              from-white to-gray-500 bg-clip-text text-9xl
                              text-transparent"
                         >

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
 import { isAxiosError } from 'axios';
+import { IPostExtended } from 'shared/interfaces/IPost';
 
 type Post = {
     limit: number;
@@ -34,7 +35,7 @@ export const getPosts = createAsyncThunk(
                 return {
                     posts: [],
                     totalPostsNumber: 0,
-                    status: error.response?.status,
+                    status: error.response?.status ?? 500,
                 };
             }
 
@@ -49,7 +50,7 @@ export const getPosts = createAsyncThunk(
 
 export const getPost = createAsyncThunk(
     'post/getPost',
-    async ({ postId }: any, { rejectWithValue }) => {
+    async ({ postId }: { postId: string }, { rejectWithValue }) => {
         try {
             const response = await axios.get(`/get-post/${postId}`, {
                 headers: {
@@ -79,7 +80,10 @@ export const getPost = createAsyncThunk(
 
 export const createBasicPost = createAsyncThunk(
     'post/createBasicPost',
-    async ({ title, content }: any, { rejectWithValue }) => {
+    async (
+        { title, content }: { title: string; content: string },
+        { rejectWithValue }
+    ) => {
         try {
             const contentRemovedClass = content.replace(/ class=".*?"/g, '');
 
@@ -115,7 +119,14 @@ export const createBasicPost = createAsyncThunk(
 
 export const createPostWithImage = createAsyncThunk(
     'post/createPostWithImage',
-    async ({ title, content, image }: any, { rejectWithValue }) => {
+    async (
+        {
+            title,
+            content,
+            image,
+        }: { title: string; content: string; image: string },
+        { rejectWithValue }
+    ) => {
         try {
             const response = await axios.post(
                 '/create-post-with-image',
@@ -222,7 +233,7 @@ export const deletePostImage = createAsyncThunk(
             return {
                 url: '',
             };
-        } catch (error) {
+        } catch {
             return {
                 status: 500,
             };
@@ -232,7 +243,15 @@ export const deletePostImage = createAsyncThunk(
 
 export const reactToPost = createAsyncThunk(
     'post/reactToPost',
-    async ({ postId, reactionType, comment }: any) => {
+    async ({
+        postId,
+        reactionType,
+        comment,
+    }: {
+        postId: string;
+        reactionType: string;
+        comment?: string;
+    }) => {
         try {
             await axios.patch(
                 `/react-to-post/${postId}/${reactionType}`,
@@ -259,7 +278,7 @@ export const reactToPost = createAsyncThunk(
 );
 
 const initialState = {
-    posts: [],
+    posts: [] as IPostExtended[],
     totalPostsNumber: 0,
     status: 200,
     isPostCreated: false,
@@ -279,7 +298,7 @@ const postSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(getPosts.fulfilled, (state: any, action: any) => {
+        builder.addCase(getPosts.fulfilled, (state, action) => {
             state.posts.push(...action.payload.posts);
             state.totalPostsNumber = action.payload.totalPostsNumber;
             state.status = action.payload.status;
@@ -294,12 +313,12 @@ const postSlice = createSlice({
             state.posts = action.payload.posts;
             state.status = action.payload.status;
         });
-        builder.addCase(deletePost.fulfilled, (state, action: any) => {
-            state.status = action.payload.status;
+        builder.addCase(deletePost.fulfilled, (state, action) => {
+            state.status = action.payload.status ?? state.status;
         });
-        builder.addCase(getPost.fulfilled, (state: any, action) => {
+        builder.addCase(getPost.fulfilled, (state, action) => {
             const postIndex = state.posts.findIndex(
-                (post: any) => post.id === action.payload.post.id
+                (post) => post.id === action.payload.post.id
             );
             state.posts[postIndex] = action.payload.post;
         });

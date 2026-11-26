@@ -13,23 +13,35 @@ interface PostCardProps {
     post: IPostExtended;
 }
 
-export const CommentInputContext = React.createContext({
+interface ICommentInputContext {
+    showCommentInput: boolean;
+    setShowCommentInput: (value: boolean) => void;
+}
+
+interface IPostContext {
+    userPost: IPostExtended;
+    setUserPost: (value: IPostExtended) => void;
+}
+
+export const CommentInputContext = React.createContext<ICommentInputContext>({
     showCommentInput: false,
-    setShowCommentInput: (value: boolean) => {},
+    setShowCommentInput: () => {},
 });
 
-export const PostContext = React.createContext({
+export const PostContext = React.createContext<IPostContext>({
     userPost: {} as IPostExtended,
-    setUserPost: (value: IPostExtended) => {},
+    setUserPost: () => {},
 });
 
 const PostCard = ({ post }: PostCardProps) => {
     const [showCommentInput, setShowCommentInput] = React.useState(false);
     const [userPost, setUserPost] = React.useState<IPostExtended>(post);
+    const [prevPost, setPrevPost] = React.useState<IPostExtended>(post);
 
-    React.useEffect(() => {
+    if (post !== prevPost) {
+        setPrevPost(post);
         setUserPost(post);
-    }, [post]);
+    }
 
     return (
         <motion.div
