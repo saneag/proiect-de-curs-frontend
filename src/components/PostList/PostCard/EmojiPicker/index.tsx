@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { MessageCircleText, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { convertNumber } from 'utils/convertBigNumber';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPost, reactToPost } from 'redux/slices/postSlice';
@@ -100,7 +100,7 @@ const EmojiPicker = () => {
           className="cursor-pointer"
           onClick={() => setShowCommentInput(!showCommentInput)}
         >
-          <MessageSquare className="size-6" />
+          <MessageCircleText className="size-6" />
         </button>
         <span className="leading-3">{userPost.numberOfComments}</span>
       </div>
