@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { CloudOff, RefreshCw } from 'lucide-react';
 
 interface ILoading {
   isServerError: boolean;
@@ -7,34 +7,29 @@ interface ILoading {
 const Loading = ({ isServerError }: ILoading) => {
   if (isServerError) {
     return (
-      <div className="bg-black">
-        <div className="flex min-h-screen w-full flex-col flex-wrap content-center justify-center text-center text-white">
-          <motion.div
-            initial={{
-              x: -200,
-              y: 0,
-              rotate: 0,
-            }}
-            animate={{
-              x: 200,
-              y: [0, 10, 0],
-              rotate: 360,
-            }}
-            transition={{
-              duration: 3,
-              ease: 'easeIn',
-              repeat: Infinity,
-              repeatDelay: 1,
-              repeatType: 'mirror',
-            }}
-          >
-            <span className="material-symbols-outlined bg-linear-to-br from-white to-gray-500 bg-clip-text text-9xl text-transparent">
-              sentiment_very_dissatisfied
-            </span>
-          </motion.div>
-          <span className="text-4xl">
-            Server error. Please try again later.
+      <div className="flex min-h-screen w-full items-center justify-center bg-gray-100 px-4">
+        <div
+          role="alert"
+          className="flex w-full max-w-md flex-col items-center rounded-2xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-200"
+        >
+          <span className="flex size-14 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+            <CloudOff aria-hidden="true" className="size-7" />
           </span>
+          <h1 className="mt-5 text-xl font-semibold text-gray-900">
+            Friendo can&apos;t reach the server
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Something went wrong on our side. Your data is safe. Check your
+            connection and try again in a moment.
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            <RefreshCw aria-hidden="true" className="size-4" />
+            Try again
+          </button>
         </div>
       </div>
     );
