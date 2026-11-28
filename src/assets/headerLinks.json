@@ -1,14 +1,5 @@
 [
   {
-    "publicLinks": [
-      {
-        "name": "home",
-        "path": "/",
-        "icon": "home"
-      }
-    ]
-  },
-  {
     "dropdownLinks": [
       {
         "name": "edit profile",

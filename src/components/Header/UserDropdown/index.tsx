@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 
@@ -70,9 +71,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
           />
         </div>
         <span className="ml-1">{user.firstName}</span>
-        <span className="material-symbols-outlined relative top-0.5 text-sm text-white">
-          expand_more
-        </span>
+        <ChevronDown className="size-4" />
       </button>
       {isUserInfoOpen && (
         <div

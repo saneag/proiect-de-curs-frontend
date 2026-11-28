@@ -1,4 +1,5 @@
 import React from 'react';
+import { CircleUserRound } from 'lucide-react';
 
 const apiOrigin = (import.meta.env.VITE_API_URL || '/api/hf').replace(
   /\/api\/hf\/?$/,
@@ -27,11 +28,7 @@ const ImageRenderer = ({ imageUrl, alt, className, type }: IProps) => {
   }, [imageUrl]);
 
   if (type === 'userAvatar' && imageUrl === '') {
-    return (
-      <span className={`material-symbols-outlined ${className}`}>
-        account_circle
-      </span>
-    );
+    return <CircleUserRound className={className} strokeWidth={1.5} />;
   }
 
   return (
@@ -41,9 +38,7 @@ const ImageRenderer = ({ imageUrl, alt, className, type }: IProps) => {
       ) : (
         <>
           {type === 'userAvatar' ? (
-            <span className={`material-symbols-outlined text-3xl`}>
-              account_circle
-            </span>
+            <CircleUserRound className={className} strokeWidth={1.5} />
           ) : (
             <div
               className={`flex size-full items-center justify-center rounded-2xl bg-gray-200`}
