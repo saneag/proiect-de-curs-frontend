@@ -122,6 +122,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
             <div className="relative">
               <ImageRenderer
                 imageUrl={image}
+                eager
                 alt="Post attachment"
                 className="max-h-64 w-full rounded-xl object-cover"
               />

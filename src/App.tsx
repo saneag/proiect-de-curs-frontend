@@ -39,7 +39,7 @@ function App(): React.JSX.Element {
   if (isLoading) return <Components.Loading isServerError={false} />;
 
   return (
-    <div>
+    <div className={isAuthenticated ? 'min-h-screen bg-gray-100' : undefined}>
       <ToastContainer />
       {isAuthenticated && <Components.Header />}
       {routes}

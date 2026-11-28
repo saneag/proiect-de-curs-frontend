@@ -47,7 +47,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
   const isMobile = width <= 768;
 
   return (
-    <div onMouseLeave={() => setIsUserInfoOpen(false)}>
+    <div className="relative" onMouseLeave={() => setIsUserInfoOpen(false)}>
       <button
         className="flex items-center gap-1 text-white"
         onMouseEnter={() => {
@@ -74,43 +74,42 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
         <ChevronDown className="size-4" />
       </button>
       {isUserInfoOpen && (
-        <div
-          className="absolute top-10.5 z-10 w-44 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-lg max-md:right-0"
-          ref={dropdownRef}
-        >
-          <div className="flex flex-col px-4 py-3 text-gray-900">
-            <span className="truncate">
-              {user.firstName} {user.lastName}
-            </span>
-            <span className="truncate">{user.email}</span>
+        <div className="absolute top-full right-0 z-10 pt-2" ref={dropdownRef}>
+          <div className="w-44 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-lg">
+            <div className="flex flex-col px-4 py-3 text-gray-900">
+              <span className="truncate">
+                {user.firstName} {user.lastName}
+              </span>
+              <span className="truncate">{user.email}</span>
+            </div>
+            <ul className="py-1 text-gray-900 select-none">
+              {dropdownLinks.map((link: Links) => {
+                return (
+                  <li key={link.path}>
+                    <Link
+                      key={link.path}
+                      to={
+                        link.path === '/myPosts'
+                          ? `${link.path}/${user.email}`
+                          : link.path
+                      }
+                      className="block px-4 py-2 capitalize hover:bg-gray-100"
+                      onClick={() => setIsUserInfoOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <button
+              type="button"
+              className="block w-full px-4 py-3 text-left text-gray-900 select-none hover:bg-gray-100"
+              onClick={handleLogout}
+            >
+              <span>Sign out</span>
+            </button>
           </div>
-          <ul className="py-1 text-gray-900 select-none">
-            {dropdownLinks.map((link: Links) => {
-              return (
-                <li key={link.path}>
-                  <Link
-                    key={link.path}
-                    to={
-                      link.path === '/myPosts'
-                        ? `${link.path}/${user.email}`
-                        : link.path
-                    }
-                    className="block px-4 py-2 capitalize hover:bg-gray-100"
-                    onClick={() => setIsUserInfoOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <button
-            type="button"
-            className="block w-full px-4 py-3 text-left text-gray-900 select-none hover:bg-gray-100"
-            onClick={handleLogout}
-          >
-            <span>Sign out</span>
-          </button>
         </div>
       )}
     </div>

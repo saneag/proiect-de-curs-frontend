@@ -114,6 +114,7 @@ const UserProfile = () => {
                 {avatar !== '' ? (
                   <Components.ImageRenderer
                     imageUrl={avatar}
+                    type={'userAvatar'}
                     alt={'No avatar'}
                     className={'size-full rounded-full object-cover text-9xl'}
                   />

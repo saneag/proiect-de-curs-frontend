@@ -211,22 +211,21 @@ export const reactToPost = createAsyncThunk(
     postId: string;
     reactionType: string;
     comment?: string;
-  }) => {
+  }): Promise<{ ok: boolean; message?: string }> => {
     try {
       await axios.patch(`/react-to-post/${postId}/${reactionType}`, {
         content: comment,
       });
-      return {
-        postId: postId,
-        reactionType: reactionType,
-        comment: comment,
-      };
+      return { ok: true };
     } catch (error) {
-      if (isAxiosError(error)) {
-        return {};
-      }
-
-      return {};
+      // Let the caller show why the server refused, instead of failing silently.
+      const message = isAxiosError(error)
+        ? (error.response?.data as { message?: string } | undefined)?.message
+        : undefined;
+      return {
+        ok: false,
+        message: message ?? 'Something went wrong. Please try again.',
+      };
     }
   },
 );

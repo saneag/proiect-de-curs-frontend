@@ -4,37 +4,36 @@ import EditButtons from '../EditButtons';
 import { useAppSelector } from 'redux/store';
 import { Link } from 'react-router-dom';
 import { PostContext } from '../index';
+import { convertDate } from 'utils/convertDate';
 
 const CardHeader = () => {
   const user = useAppSelector((state) => state.userReducer.user);
   const { userPost } = React.useContext(PostContext);
+  const profileLink = `/userProfile/${userPost.creator.email}`;
 
   return (
-    <div className="grid grid-cols-3 items-center gap-y-3 border-b-2 p-3">
-      <div className="flex w-52 items-center gap-2">
-        <Link to={`/userProfile/${userPost.creator.email}`} className="flex">
-          <Components.ImageRenderer
-            imageUrl={userPost.creator.avatarUrl}
-            type={'userAvatar'}
-            alt={''}
-            className={`size-10 rounded-full text-4xl ${
-              userPost.creator.avatarUrl !== '' && 'shadow-md'
-            }`}
-          />
+    <div className="flex items-center gap-3 px-4 pt-4">
+      <Link to={profileLink} className="shrink-0">
+        <Components.ImageRenderer
+          imageUrl={userPost.creator.avatarUrl}
+          type={'userAvatar'}
+          alt={''}
+          className="size-11 rounded-full object-cover"
+        />
+      </Link>
+      <div className="flex min-w-0 flex-1 flex-col leading-tight">
+        <Link
+          to={profileLink}
+          className="max-w-full self-start truncate font-semibold text-gray-900 hover:underline"
+        >
+          {userPost.creator.firstName} {userPost.creator.lastName}
         </Link>
-        <Link to={`/userProfile/${userPost.creator.email}`}>
-          <span className="text-lg">
-            {userPost.creator.firstName} {userPost.creator.lastName}
-          </span>
-        </Link>
-      </div>
-      <div className="col-span-3 row-start-2 flex justify-center text-center lg:col-span-1 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-        <span className="w-full text-2xl font-bold wrap-break-word text-ellipsis">
-          {userPost.title}
+        <span className="text-sm text-gray-600">
+          {convertDate(userPost.createdAt)}
         </span>
       </div>
       {userPost.creatorId === user.id && (
-        <div className="col-start-3 flex justify-end pr-1">
+        <div className="shrink-0">
           <EditButtons postId={userPost.id} />
         </div>
       )}

@@ -62,9 +62,9 @@ const PostList = ({ children, className }: IPostList) => {
 
   return (
     <div
-      className={`col-span-3 flex w-full flex-col gap-10 justify-self-center md:w-10/12 ${className}`}
+      className={`flex w-full max-w-2xl flex-col gap-10 justify-self-center ${className ?? ''}`}
     >
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-end gap-3">
         <SearchPost setSearch={setSearch} />
         {children}
       </div>

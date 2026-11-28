@@ -235,9 +235,6 @@ export const userSlice = createSlice({
     resetStatus: (state) => {
       state.status = 200;
     },
-    resetUserStatus: (state) => {
-      state.status = 200;
-    },
     // The API refused to renew the session, so the user has to sign in again.
     sessionExpired: (state) => {
       state.isAuthenticated = false;

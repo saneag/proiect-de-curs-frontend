@@ -58,14 +58,13 @@ const EmojiPicker = () => {
           aria-pressed={!!checkIfUserLiked()}
           initial={{ scale: 1 }}
           whileTap={{ scale: 0.8 }}
-          className={`cursor-pointer ${
-            checkIfUserLiked() ? 'text-blue-500' : ''
-          }`}
+          className="cursor-pointer"
           onClick={handleLike}
         >
           <ThumbsUp
-            className="size-6"
-            fill={checkIfUserLiked() ? 'currentColor' : 'none'}
+            className={`size-6 ${
+              checkIfUserLiked() ? 'fill-blue-400 stroke-blue-700' : ''
+            }`}
           />
         </motion.button>
         <span className="leading-3">
@@ -79,14 +78,13 @@ const EmojiPicker = () => {
           aria-pressed={!!checkIfUserDisliked()}
           initial={{ scale: 1 }}
           whileTap={{ scale: 0.8 }}
-          className={`cursor-pointer ${
-            checkIfUserDisliked() ? 'text-gray-800' : ''
-          }`}
+          className="cursor-pointer"
           onClick={handleDislike}
         >
           <ThumbsDown
-            className="size-6"
-            fill={checkIfUserDisliked() ? 'currentColor' : 'none'}
+            className={`size-6 ${
+              checkIfUserDisliked() ? 'fill-gray-500 stroke-gray-900' : ''
+            }`}
           />
         </motion.button>
         <span className="leading-3">
@@ -94,14 +92,17 @@ const EmojiPicker = () => {
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <button
+        <motion.button
           type="button"
           aria-label="Comments"
+          aria-expanded={showCommentInput}
+          initial={{ scale: 1 }}
+          whileTap={{ scale: 0.8 }}
           className="cursor-pointer"
           onClick={() => setShowCommentInput(!showCommentInput)}
         >
           <MessageCircleText className="size-6" />
-        </button>
+        </motion.button>
         <span className="leading-3">{userPost.numberOfComments}</span>
       </div>
     </div>

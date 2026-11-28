@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { PostContext } from '../index';
 import { Components } from '../../../index';
 import { convertDate } from '../../../../utils/convertDate';
@@ -9,8 +8,8 @@ const CardComments = () => {
   const { userPost } = React.useContext(PostContext);
 
   return (
-    <motion.div
-      className={`${userPost.numberOfComments > 0 && 'border-t-2'} ${
+    <div
+      className={`${userPost.numberOfComments > 0 && 'border-t border-gray-200'} ${
         userPost.numberOfComments > 3 &&
         'h-60 scrollbar overflow-y-scroll shadow-inner'
       }`}
@@ -18,33 +17,38 @@ const CardComments = () => {
       {userPost.comments.map((comment, index) => (
         <div
           key={index}
-          className="flex flex-col border-b-2 border-dotted border-gray-400 px-2 py-3 last:border-b-0"
+          className="flex gap-3 border-b border-gray-200 px-4 py-3 last:border-b-0"
         >
-          <div className="flex flex-col gap-1">
-            <div className="flex">
+          <Link
+            to={`/userProfile/${comment.creator.email}`}
+            className="shrink-0"
+          >
+            <Components.ImageRenderer
+              imageUrl={comment.creator.avatarUrl}
+              type={'userAvatar'}
+              alt={'userAvatar'}
+              className={'size-9 rounded-full object-cover'}
+            />
+          </Link>
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <div className="flex flex-wrap items-baseline gap-x-2">
               <Link
                 to={`/userProfile/${comment.creator.email}`}
-                className="flex items-center gap-1"
+                className="font-semibold text-gray-900 hover:underline"
               >
-                <Components.ImageRenderer
-                  imageUrl={comment.creator.avatarUrl}
-                  type={'userAvatar'}
-                  alt={'userAvatar'}
-                  className={'size-7 rounded-full'}
-                />
-                <span>
-                  {comment.creator.firstName} {comment.creator.lastName}
-                </span>
+                {comment.creator.firstName} {comment.creator.lastName}
               </Link>
+              <span className="text-sm text-gray-600">
+                {convertDate(comment.createdAt)}
+              </span>
             </div>
-            <span>{comment.content}</span>
-          </div>
-          <div className="flex justify-end">
-            <span>{convertDate(comment.createdAt)}</span>
+            <span className="wrap-break-word whitespace-pre-wrap text-gray-900">
+              {comment.content}
+            </span>
           </div>
         </div>
       ))}
-    </motion.div>
+    </div>
   );
 };
 

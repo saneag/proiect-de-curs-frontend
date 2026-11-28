@@ -2,12 +2,17 @@ import React from 'react';
 
 import links from 'assets/headerLinks.json';
 import UserDropdown from './UserDropdown';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import logo from 'assets/icons/logo_no_bg.png';
 
+// Pages that show the left menu, which already holds the account links.
+const hasLeftMenu = (pathname: string) =>
+  pathname === '/' || pathname.startsWith('/myPosts');
+
 const Header = () => {
   const dropdownLinks = React.useMemo(() => links[0].dropdownLinks || [], []);
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -19,7 +24,11 @@ const Header = () => {
               <img src={logo} alt="Home" className="h-10 md:h-12" />
             </NavLink>
           </div>
-          <div className="relative col-start-3 flex items-center justify-end md:w-1/3 md:justify-center">
+          <div
+            className={`relative col-start-3 flex items-center justify-end md:w-1/3 md:justify-center ${
+              hasLeftMenu(pathname) ? 'xl:hidden' : ''
+            }`}
+          >
             <UserDropdown dropdownLinks={dropdownLinks} />
           </div>
         </div>

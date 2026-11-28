@@ -1,5 +1,4 @@
 import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import { type IPostExtended } from 'shared/interfaces/IPost';
 
@@ -44,12 +43,7 @@ const PostCard = ({ post }: PostCardProps) => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="w-full rounded-xl bg-gray-300"
-    >
+    <div className="w-full rounded-2xl border border-gray-200 bg-white shadow-sm">
       <PostContext.Provider value={{ userPost, setUserPost }}>
         <CardHeader />
         <CardBody />
@@ -57,13 +51,11 @@ const PostCard = ({ post }: PostCardProps) => {
           value={{ showCommentInput, setShowCommentInput }}
         >
           <CardFooter />
-          <AnimatePresence>
-            {showCommentInput && <CardCommentAdd />}
-          </AnimatePresence>
+          {showCommentInput && <CardCommentAdd />}
         </CommentInputContext.Provider>
         <CardComments />
       </PostContext.Provider>
-    </motion.div>
+    </div>
   );
 };
 

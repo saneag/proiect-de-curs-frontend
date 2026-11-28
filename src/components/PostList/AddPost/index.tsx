@@ -13,10 +13,10 @@ const AddPost = () => {
       <button
         type="button"
         aria-label="New post"
-        className="flex h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-blue-700 px-4 font-medium text-white shadow-sm transition duration-150 hover:bg-blue-600 active:scale-95"
+        className="flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full bg-blue-700 px-4 text-sm font-medium text-white shadow-sm transition duration-150 hover:bg-blue-600 active:scale-95"
         onClick={() => setIsAddPostFormOpen(true)}
       >
-        <SquarePen className="size-5 shrink-0" />
+        <SquarePen className="size-4 shrink-0" />
         <span className="max-sm:hidden">New post</span>
       </button>
 
