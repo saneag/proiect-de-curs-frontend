@@ -2,12 +2,23 @@ const allowedTags = new Set([
   'STRONG',
   'EM',
   'S',
+  'U',
   'P',
   'BR',
   'BLOCKQUOTE',
+  'UL',
+  'OL',
+  'LI',
   'SUP',
   'SUB',
 ]);
+
+const escapeAttribute = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 
 /** Keep only the formatting tags produced by the post editor. */
 export const sanitizePostHtml = (html: string): string => {
@@ -33,6 +44,15 @@ export const sanitizePostHtml = (html: string): string => {
     }
 
     const children = Array.from(element.childNodes).map(cleanNode).join('');
+
+    if (element.tagName === 'A') {
+      const href = element.getAttribute('href')?.trim() ?? '';
+      // Only plain web links survive; javascript: and other schemes are dropped.
+      return /^https?:\/\//i.test(href)
+        ? `<a href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer nofollow ugc">${children}</a>`
+        : children;
+    }
+
     return allowedTags.has(element.tagName)
       ? `<${element.tagName.toLowerCase()}>${children}</${element.tagName.toLowerCase()}>`
       : children;

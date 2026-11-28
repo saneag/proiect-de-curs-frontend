@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
 import { isAxiosError } from 'axios';
@@ -18,11 +17,6 @@ export const getPosts = createAsyncThunk(
     try {
       const response = await axios.get(
         `/get-posts?limit=${limit}&page=${page}&search=${encodeURIComponent(search)}&email=${encodeURIComponent(email)}`,
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        },
       );
 
       return {
@@ -52,11 +46,7 @@ export const getPost = createAsyncThunk(
   'post/getPost',
   async ({ postId }: { postId: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/get-post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.get(`/get-post/${postId}`);
 
       return {
         post: response.data.post,
@@ -85,20 +75,10 @@ export const createBasicPost = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const contentRemovedClass = content.replace(/ class=".*?"/g, '');
-
-      const response = await axios.post(
-        '/create-post',
-        {
-          title,
-          content: contentRemovedClass,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        },
-      );
+      const response = await axios.post('/create-post', {
+        title,
+        content,
+      });
 
       return {
         status: response.status,
@@ -128,19 +108,11 @@ export const createPostWithImage = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const response = await axios.post(
-        '/create-post-with-image',
-        {
-          title,
-          content,
-          image,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        },
-      );
+      const response = await axios.post('/create-post-with-image', {
+        title,
+        content,
+        image,
+      });
 
       return {
         status: response.status,
@@ -179,11 +151,7 @@ export const deletePost = createAsyncThunk(
   'post/deletePost',
   async (postId: string) => {
     try {
-      const response = await axios.delete(`/delete-post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.delete(`/delete-post/${postId}`);
 
       return {
         status: response.status,
@@ -202,11 +170,7 @@ export const addPostImage = createAsyncThunk(
   'post/addPostImage',
   async (formData: FormData) => {
     try {
-      const response = await axios.post('/post/postImage', formData, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.post('/post/postImage', formData);
       return {
         url: response.data.url,
       };
@@ -225,11 +189,7 @@ export const deletePostImage = createAsyncThunk(
   async (filePath: string) => {
     try {
       const fileName = filePath.split('uploads/')[1]?.split('/').pop();
-      await axios.delete(`/post/postImage/${fileName}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      await axios.delete(`/post/postImage/${fileName}`);
       return {
         url: '',
       };
@@ -253,15 +213,9 @@ export const reactToPost = createAsyncThunk(
     comment?: string;
   }) => {
     try {
-      await axios.patch(
-        `/react-to-post/${postId}/${reactionType}`,
-        { content: comment },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        },
-      );
+      await axios.patch(`/react-to-post/${postId}/${reactionType}`, {
+        content: comment,
+      });
       return {
         postId: postId,
         reactionType: reactionType,

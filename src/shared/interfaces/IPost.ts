@@ -30,7 +30,6 @@ export interface IPostExtended extends IPostLikeComment, IPostImage {
 export interface IPostReaction {
   id: string;
   userId: string;
-  email: string;
   like?: boolean;
   dislike?: boolean;
 }

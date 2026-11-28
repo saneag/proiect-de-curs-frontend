@@ -3,7 +3,6 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
 
 import axios from 'services/axios.service';
 import {
@@ -13,19 +12,32 @@ import {
 } from 'shared/interfaces/IUser';
 import { isAxiosError } from 'axios';
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// A restarting API (no response or a gateway error) is retried instead of ending the session.
+async function withRetry<T>(request: () => Promise<T>, attempts = 4) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await request();
+    } catch (error) {
+      const status = isAxiosError(error) ? error.response?.status : undefined;
+      const isTransient =
+        isAxiosError(error) &&
+        (!error.response || [502, 503, 504].includes(status as number));
+      if (!isTransient || attempt >= attempts) throw error;
+      await wait(attempt * 500);
+    }
+  }
+}
+
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }) => {
     try {
+      // The API stores the session in HttpOnly cookies; this code never sees a token.
       const response = await axios.post('/user/login', credentials);
-      Cookies.set('accessToken', response.data.accessToken);
-      Cookies.set('refreshToken', response.data.refreshToken);
 
-      const userResponse = await axios.get('/user', {
-        headers: {
-          Authorization: `Bearer ${response.data.accessToken}`,
-        },
-      });
+      const userResponse = await axios.get('/user');
 
       return {
         isAuthenticated: true,
@@ -75,9 +87,7 @@ export const register = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   try {
-    const response = await axios.post('/user/logout', {
-      refreshToken: Cookies.get('refreshToken'),
-    });
+    const response = await axios.post('/user/logout');
 
     return {
       isAuthenticated: false,
@@ -95,32 +105,14 @@ export const logout = createAsyncThunk('auth/logout', async () => {
       isAuthenticated: false,
       status: 500,
     };
-  } finally {
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
   }
 });
 
 export const getUser = createAsyncThunk('auth/getUser', async () => {
   try {
-    if (!Cookies.get('refreshToken'))
-      return {
-        isAuthenticated: false,
-        userStatus: 401,
-        user: {} as IUserResponse,
-      };
-
-    const token = await axios.post('/user/refreshAccessToken', {
-      refreshToken: Cookies.get('refreshToken'),
-    });
-
-    Cookies.set('accessToken', token.data.accessToken);
-
-    const response = await axios.get('/user', {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('accessToken')}`,
-      },
-    });
+    // The session lives in HttpOnly cookies, so the only way to know is to ask the API.
+    // An expired access token is renewed automatically by the axios service.
+    const response = await withRetry(() => axios.get('/user'));
 
     return {
       isAuthenticated: true,
@@ -131,7 +123,8 @@ export const getUser = createAsyncThunk('auth/getUser', async () => {
     if (isAxiosError(error)) {
       return {
         isAuthenticated: false,
-        userStatus: error.response ? error.response.status : 401,
+        // No response means the API is unreachable: show a server error, not the login page.
+        userStatus: error.response ? error.response.status : 503,
         user: {} as IUserResponse,
       };
     }
@@ -148,11 +141,7 @@ export const getUserByEmail = createAsyncThunk(
   'user/getUserByEmail',
   async (email: string) => {
     try {
-      const response = await axios.get(`/user/${email}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.get(`/user/${email}`);
       return {
         visitedUser: response.data,
       };
@@ -170,38 +159,11 @@ export const getUserByEmail = createAsyncThunk(
   },
 );
 
-export const getUsers = createAsyncThunk('user/getUsers', async () => {
-  try {
-    const response = await axios.get('/users', {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('accessToken')}`,
-      },
-    });
-    return {
-      users: response.data.users,
-    };
-  } catch (error) {
-    if (isAxiosError(error)) {
-      return {
-        users: [],
-      };
-    }
-
-    return {
-      users: [],
-    };
-  }
-});
-
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async (user: IUserEdit) => {
     try {
-      const response = await axios.patch(`/user/updateUser`, user, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.patch(`/user/updateUser`, user);
       return {
         status: response ? response.status : 500,
         user: response.data,
@@ -229,11 +191,7 @@ export const addUserAvatar = createAsyncThunk(
   'user/addUserAvatar',
   async (formData: FormData) => {
     try {
-      const response = await axios.post('/user/userAvatar', formData, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      const response = await axios.post('/user/userAvatar', formData);
       return {
         url: response.data.url,
       };
@@ -250,11 +208,7 @@ export const deleteUserAvatar = createAsyncThunk(
   async (filePath: string) => {
     try {
       const fileName = filePath.split('uploads/')[1]?.split('/').pop();
-      await axios.delete(`/user/userAvatar/${fileName}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
+      await axios.delete(`/user/userAvatar/${fileName}`);
       return {
         url: '',
       };
@@ -272,7 +226,6 @@ const initialState = {
   isAuthenticated: false,
   user: {} as IUserResponse,
   visitedUser: {} as IUserResponse,
-  users: [] as IUserResponse[],
 };
 
 export const userSlice = createSlice({
@@ -284,6 +237,11 @@ export const userSlice = createSlice({
     },
     resetUserStatus: (state) => {
       state.status = 200;
+    },
+    // The API refused to renew the session, so the user has to sign in again.
+    sessionExpired: (state) => {
+      state.isAuthenticated = false;
+      state.user = {} as IUserResponse;
     },
   },
   extraReducers: (builder) => {
@@ -305,9 +263,6 @@ export const userSlice = createSlice({
     builder.addCase(getUserByEmail.fulfilled, (state, action) => {
       state.visitedUser = action.payload.visitedUser;
     });
-    builder.addCase(getUsers.fulfilled, (state, action) => {
-      state.users = action.payload.users;
-    });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isAuthenticated = action.payload.isAuthenticated;
       state.user = {} as IUserResponse;
@@ -325,6 +280,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetStatus } = userSlice.actions;
+export const { resetStatus, sessionExpired } = userSlice.actions;
 
 export default userSlice.reducer;

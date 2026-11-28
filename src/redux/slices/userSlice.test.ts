@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { describe, expect, it, vi } from 'vitest';
-import Cookies from 'js-cookie';
 import userReducer, {
   deleteUserAvatar,
   login,
   logout,
+  sessionExpired,
   updateUser,
 } from './userSlice';
 import api from 'services/axios.service';
@@ -25,11 +25,11 @@ const user = {
 };
 
 describe('account operations', () => {
-  it('logs in, stores tokens, and fetches the profile with authorization', async () => {
+  it('logs in and loads the profile without handling any token', async () => {
     const store = configureStore({ reducer: userReducer });
     vi.mocked(api.post).mockResolvedValueOnce({
       status: 200,
-      data: { accessToken: 'access', refreshToken: 'refresh' },
+      data: { message: 'Login successful' },
     });
     vi.mocked(api.get).mockResolvedValueOnce({ data: user });
     await store.dispatch(
@@ -37,10 +37,10 @@ describe('account operations', () => {
     );
     expect(store.getState().isAuthenticated).toBe(true);
     expect(store.getState().user.email).toBe(user.email);
-    expect(api.get).toHaveBeenCalledWith('/user', {
-      headers: { Authorization: 'Bearer access' },
-    });
-    expect(Cookies.get('refreshToken')).toBe('refresh');
+    // The session cookies are set by the API; the request carries no token.
+    expect(api.get).toHaveBeenCalledWith('/user');
+    expect(document.cookie).toBe('');
+    expect(JSON.stringify(localStorage)).not.toMatch(/token/i);
   });
 
   it('keeps a valid empty user object after rejected credentials', async () => {
@@ -54,15 +54,27 @@ describe('account operations', () => {
     expect(store.getState().user).toEqual({});
   });
 
-  it('clears local credentials even when the logout request fails', async () => {
-    const store = configureStore({ reducer: userReducer });
-    Cookies.set('accessToken', 'access');
-    Cookies.set('refreshToken', 'refresh');
+  it('signs out locally even when the logout request fails', async () => {
+    const initial = userReducer(undefined, { type: 'init' });
+    const store = configureStore({
+      reducer: userReducer,
+      preloadedState: { ...initial, user, isAuthenticated: true },
+    });
     vi.mocked(api.post).mockRejectedValueOnce(new Error('Offline'));
     await store.dispatch(logout());
-    expect(Cookies.get('accessToken')).toBeUndefined();
-    expect(Cookies.get('refreshToken')).toBeUndefined();
+    expect(api.post).toHaveBeenCalledWith('/user/logout');
     expect(store.getState().isAuthenticated).toBe(false);
+    expect(store.getState().user).toEqual({});
+  });
+
+  it('returns to the login page when the session expires', () => {
+    const initial = userReducer(undefined, { type: 'init' });
+    const state = userReducer(
+      { ...initial, user, isAuthenticated: true },
+      sessionExpired(),
+    );
+    expect(state.isAuthenticated).toBe(false);
+    expect(state.user).toEqual({});
   });
 
   it('preserves the current profile after a failed update', async () => {
@@ -82,11 +94,8 @@ describe('account operations', () => {
 
   it('deletes avatars using the actual backend route', async () => {
     const store = configureStore({ reducer: userReducer });
-    Cookies.set('accessToken', 'access');
     vi.mocked(api.delete).mockResolvedValueOnce({ status: 200 });
     await store.dispatch(deleteUserAvatar('uploads/userAvatar/image.png'));
-    expect(api.delete).toHaveBeenCalledWith('/user/userAvatar/image.png', {
-      headers: { Authorization: 'Bearer access' },
-    });
+    expect(api.delete).toHaveBeenCalledWith('/user/userAvatar/image.png');
   });
 });

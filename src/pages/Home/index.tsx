@@ -2,11 +2,10 @@ import { Components } from 'components';
 
 const Home = () => {
   return (
-    <div className="my-4 grid grid-cols-1 px-4 md:grid-cols-4 lg:container">
-      <Components.PostList>
+    <div className="container my-4 flex justify-center px-4">
+      <Components.PostList className="md:w-8/12">
         <Components.AddPost />
       </Components.PostList>
-      <Components.UsersList />
     </div>
   );
 };

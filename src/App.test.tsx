@@ -1,9 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import App from './App';
 import userReducer from './redux/slices/userSlice';
 import postReducer from './redux/slices/postSlice';
@@ -11,6 +10,7 @@ import api from './services/axios.service';
 
 vi.mock('./services/axios.service', () => ({
   default: { post: vi.fn(), get: vi.fn() },
+  SESSION_EXPIRED_EVENT: 'session-expired',
 }));
 vi.mock('./components', () => ({
   Components: {
@@ -43,18 +43,20 @@ function renderApp(url = '/') {
 }
 
 describe('session restoration and routing', () => {
-  it('opens login without a token and does not show a false image error', async () => {
+  it('opens login without a session and does not show a false image error', async () => {
+    vi.mocked(api.get).mockRejectedValueOnce({
+      isAxiosError: true,
+      response: { status: 403 },
+    });
     renderApp('/userProfile');
     expect(await screen.findByText('Login page')).toBeInTheDocument();
-    expect(api.post).not.toHaveBeenCalled();
     expect(
       screen.queryByText('Error with image loading'),
     ).not.toBeInTheDocument();
   });
 
-  it('finishes loading when the API rejects a malformed session with HTTP 400', async () => {
-    Cookies.set('refreshToken', 'invalid');
-    vi.mocked(api.post).mockRejectedValueOnce({
+  it('finishes loading when the API rejects the session with HTTP 400', async () => {
+    vi.mocked(api.get).mockRejectedValueOnce({
       isAxiosError: true,
       response: { status: 400 },
     });
@@ -63,8 +65,7 @@ describe('session restoration and routing', () => {
   });
 
   it('shows a server error if session restoration fails with HTTP 500', async () => {
-    Cookies.set('refreshToken', 'session');
-    vi.mocked(api.post).mockRejectedValueOnce({
+    vi.mocked(api.get).mockRejectedValueOnce({
       isAxiosError: true,
       response: { status: 500 },
     });
@@ -73,10 +74,6 @@ describe('session restoration and routing', () => {
   });
 
   it('restores a session and opens an authenticated deep link', async () => {
-    Cookies.set('refreshToken', 'session');
-    vi.mocked(api.post).mockResolvedValueOnce({
-      data: { accessToken: 'renewed' },
-    });
     vi.mocked(api.get).mockResolvedValueOnce({
       status: 200,
       data: { email: 'user@example.com' },
@@ -84,6 +81,33 @@ describe('session restoration and routing', () => {
     renderApp('/userProfile');
     expect(await screen.findByText('Profile page')).toBeInTheDocument();
     expect(screen.getByText('Navigation')).toBeInTheDocument();
-    expect(Cookies.get('accessToken')).toBe('renewed');
+    // The app never reads, stores or sends a token itself.
+    expect(api.get).toHaveBeenCalledWith('/user');
+    expect(document.cookie).toBe('');
+    expect(JSON.stringify(localStorage)).not.toMatch(/token/i);
+  });
+
+  it('keeps the session when the API is briefly unreachable', async () => {
+    vi.mocked(api.get)
+      .mockRejectedValueOnce({ isAxiosError: true })
+      .mockResolvedValueOnce({
+        status: 200,
+        data: { email: 'user@example.com' },
+      });
+    renderApp('/userProfile');
+    expect(await screen.findByText('Profile page')).toBeInTheDocument();
+  });
+
+  it('returns to the login page when the session can no longer be renewed', async () => {
+    vi.mocked(api.get).mockResolvedValueOnce({
+      status: 200,
+      data: { email: 'user@example.com' },
+    });
+    renderApp('/userProfile');
+    expect(await screen.findByText('Profile page')).toBeInTheDocument();
+    act(() => {
+      window.dispatchEvent(new Event('session-expired'));
+    });
+    expect(await screen.findByText('Login page')).toBeInTheDocument();
   });
 });
