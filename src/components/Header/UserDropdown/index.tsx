@@ -75,16 +75,16 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
       </button>
       {isUserInfoOpen && (
         <div
-          className="absolute top-10.5 z-10 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm max-md:right-0 dark:divide-gray-600 dark:bg-gray-700"
+          className="absolute top-10.5 z-10 w-44 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-lg max-md:right-0"
           ref={dropdownRef}
         >
-          <div className="flex flex-col px-4 py-3 text-white">
+          <div className="flex flex-col px-4 py-3 text-gray-900">
             <span className="truncate">
               {user.firstName} {user.lastName}
             </span>
             <span className="truncate">{user.email}</span>
           </div>
-          <ul className="px-4 py-3 text-white select-none">
+          <ul className="py-1 text-gray-900 select-none">
             {dropdownLinks.map((link: Links) => {
               return (
                 <li key={link.path}>
@@ -95,7 +95,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
                         ? `${link.path}/${user.email}`
                         : link.path
                     }
-                    className="block capitalize"
+                    className="block px-4 py-2 capitalize hover:bg-gray-100"
                     onClick={() => setIsUserInfoOpen(false)}
                   >
                     {link.name}
@@ -106,7 +106,7 @@ const UserDropdown = ({ dropdownLinks }: ILinks) => {
           </ul>
           <button
             type="button"
-            className="block w-full px-4 py-3 text-left text-white select-none"
+            className="block w-full px-4 py-3 text-left text-gray-900 select-none hover:bg-gray-100"
             onClick={handleLogout}
           >
             <span>Sign out</span>

@@ -1,5 +1,6 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
+import { Search, X } from 'lucide-react';
 
 interface ISearchPost {
   setSearch: (search: string) => void;
@@ -29,27 +30,26 @@ const SearchPost = ({ setSearch }: ISearchPost) => {
   };
 
   return (
-    <div className="flex w-full justify-center xl:justify-start">
-      <div className="relative w-60 md:w-80">
-        <input
-          placeholder="Search..."
-          value={inputValue}
-          onChange={handleInputChange}
-          className="w-full rounded-md border-2 bg-white px-3 py-2 text-xl text-black outline-hidden transition-all duration-300 focus:border-blue-500"
-          maxLength={50}
-          ref={inputRef}
-        />
-        {inputValue && (
-          <button
-            type="button"
-            aria-label="Clear search"
-            className="material-symbols-outlined absolute top-3 right-2 cursor-pointer"
-            onClick={handleClearSearch}
-          >
-            close
-          </button>
-        )}
-      </div>
+    <div className="group relative w-full max-w-md flex-1">
+      <Search className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-blue-600" />
+      <input
+        placeholder="Search posts..."
+        value={inputValue}
+        onChange={handleInputChange}
+        className="h-11 w-full rounded-full bg-white pr-11 pl-11 text-base text-gray-900 shadow-sm ring-1 ring-gray-200 outline-hidden transition placeholder:text-gray-400 hover:ring-gray-300 focus:ring-2 focus:ring-blue-500"
+        maxLength={50}
+        ref={inputRef}
+      />
+      {inputValue && (
+        <button
+          type="button"
+          aria-label="Clear search"
+          className="absolute top-1/2 right-3 flex size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-200 hover:text-gray-700"
+          onClick={handleClearSearch}
+        >
+          <X className="size-4" />
+        </button>
+      )}
     </div>
   );
 };

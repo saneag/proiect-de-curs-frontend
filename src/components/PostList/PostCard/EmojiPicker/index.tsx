@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { convertNumber } from 'utils/convertBigNumber';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPost, reactToPost } from 'redux/slices/postSlice';
@@ -51,35 +52,43 @@ const EmojiPicker = () => {
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
-        <motion.span
+        <motion.button
+          type="button"
+          aria-label="Like"
+          aria-pressed={!!checkIfUserLiked()}
           initial={{ scale: 1 }}
           whileTap={{ scale: 0.8 }}
-          className={`${
-            checkIfUserLiked()
-              ? 'material-icons text-blue-500'
-              : 'material-symbols-outlined'
-          } inline-block cursor-pointer`}
+          className={`cursor-pointer ${
+            checkIfUserLiked() ? 'text-blue-500' : ''
+          }`}
           onClick={handleLike}
         >
-          thumb_up
-        </motion.span>
+          <ThumbsUp
+            className="size-6"
+            fill={checkIfUserLiked() ? 'currentColor' : 'none'}
+          />
+        </motion.button>
         <span className="leading-3">
           {convertNumber(userPost.numberOfLikes)}
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <motion.span
+        <motion.button
+          type="button"
+          aria-label="Dislike"
+          aria-pressed={!!checkIfUserDisliked()}
           initial={{ scale: 1 }}
           whileTap={{ scale: 0.8 }}
-          className={`${
-            checkIfUserDisliked()
-              ? 'material-icons text-gray-800'
-              : 'material-symbols-outlined'
-          } cursor-pointer`}
+          className={`cursor-pointer ${
+            checkIfUserDisliked() ? 'text-gray-800' : ''
+          }`}
           onClick={handleDislike}
         >
-          thumb_down
-        </motion.span>
+          <ThumbsDown
+            className="size-6"
+            fill={checkIfUserDisliked() ? 'currentColor' : 'none'}
+          />
+        </motion.button>
         <span className="leading-3">
           {convertNumber(userPost.numberOfDislikes)}
         </span>
@@ -88,10 +97,10 @@ const EmojiPicker = () => {
         <button
           type="button"
           aria-label="Comments"
-          className="material-symbols-outlined cursor-pointer"
+          className="cursor-pointer"
           onClick={() => setShowCommentInput(!showCommentInput)}
         >
-          comment
+          <MessageSquare className="size-6" />
         </button>
         <span className="leading-3">{userPost.numberOfComments}</span>
       </div>
