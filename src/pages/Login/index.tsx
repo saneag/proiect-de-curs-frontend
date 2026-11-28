@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Form, Formik, type FormikHelpers } from 'formik';
+import { LoaderCircle } from 'lucide-react';
 import { useAppDispatch } from 'redux/store';
 import { useNavigate } from 'react-router';
 
@@ -31,10 +32,6 @@ const Login = () => {
     dispatch(resetStatus());
     setErrorsCallback({});
     resetFormCallback();
-  };
-
-  const handleSubmit = (values: IUserRegister) => {
-    validate(values).then(() => {});
   };
 
   const validate = async (values: IUserRegister) => {
@@ -78,13 +75,13 @@ const Login = () => {
             confirmPassword: '',
           }}
           validationSchema={isRegister ? RegisterSchema : LoginSchema}
-          onSubmit={(values: IUserRegister, actions) => {
-            handleSubmit(values);
-            actions.setSubmitting(true);
-          }}
+          onSubmit={validate}
         >
-          {({ setErrors, resetForm }) => (
-            <Form className="flex size-full flex-col flex-wrap content-center justify-center rounded-2xl py-6">
+          {({ setErrors, resetForm, isSubmitting }) => (
+            <Form
+              aria-busy={isSubmitting}
+              className="flex size-full flex-col flex-wrap content-center justify-center rounded-2xl py-6"
+            >
               {isRegister && (
                 <FormikFields value={'firstName'} placeholder={'John'} />
               )}
@@ -123,13 +120,21 @@ const Login = () => {
               <div className="flex justify-around">
                 <button
                   type="submit"
-                  className="w-5/12 self-center rounded-full border-b-4 border-blue-900 bg-linear-to-r from-blue-500 to-blue-800 p-2 text-xl text-white shadow-lg shadow-blue-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none"
+                  disabled={isSubmitting}
+                  className="flex w-5/12 items-center justify-center gap-2 self-center rounded-full border-b-4 border-blue-900 bg-linear-to-r from-blue-500 to-blue-800 p-2 text-xl text-white shadow-lg shadow-blue-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
+                  {isSubmitting && (
+                    <LoaderCircle
+                      aria-hidden="true"
+                      className="size-5 animate-spin"
+                    />
+                  )}
                   {isRegister ? 'Register' : 'Login'}
                 </button>
                 <button
                   type="button"
-                  className={`w-5/12 self-center rounded-full border-b-4 border-green-900 bg-linear-to-l from-green-500 to-green-800 p-2 text-xl text-white shadow-lg shadow-green-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none ${
+                  disabled={isSubmitting}
+                  className={`w-5/12 self-center rounded-full border-b-4 border-green-900 bg-linear-to-l from-green-500 to-green-800 p-2 text-xl text-white shadow-lg shadow-green-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-60 ${
                     isRegister
                       ? 'border-yellow-900 from-yellow-500 ' + 'to-yellow-800'
                       : ''
