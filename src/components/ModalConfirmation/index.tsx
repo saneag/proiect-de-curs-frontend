@@ -25,7 +25,7 @@ const ModalConfirmation = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 z-20 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
+      className="fixed top-0 left-0 z-60 flex h-screen w-full justify-center bg-gray-800/90 pt-10"
       onClick={() => {
         setIsModalOpen(false);
       }}

@@ -11,6 +11,10 @@ export const UserEditSchema = Yup.object().shape({
     .required('* Name is required'),
   email: Yup.string().email('* Invalid email').required('* Email is required'),
   description: Yup.string()
-    .min(10, '* Description is too short!')
-    .max(300, '* Description is too long!'),
+    .test(
+      'min-length',
+      '* Bio is too short!',
+      (value) => !value || value.length >= 10,
+    )
+    .max(300, '* Bio is too long!'),
 });

@@ -13,11 +13,14 @@ import SearchPost from '../SearchPost';
 interface IPostList {
   children?: React.ReactNode;
   className?: string;
+  // Author to list posts for. Falls back to the `:email` route param.
+  email?: string;
 }
 
-const PostList = ({ children, className }: IPostList) => {
+const PostList = ({ children, className, email: authorEmail }: IPostList) => {
   const dispatch = useAppDispatch();
-  const { email } = useParams();
+  const params = useParams();
+  const email = authorEmail ?? params.email;
 
   const posts = useAppSelector((state) => state.postReducer.posts);
   const totalPostsNumber = useAppSelector(

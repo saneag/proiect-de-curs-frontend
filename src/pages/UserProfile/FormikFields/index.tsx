@@ -12,7 +12,7 @@ export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
         id={value}
         name={value}
         type={type || 'text'}
-        className={`mb-4 w-80 rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden duration-300 md:w-72 ${disabled && 'cursor-default'}`}
+        className={`mb-4 w-full rounded-md border border-gray-300 bg-white p-3 text-lg text-black outline-hidden duration-300 focus:border-blue-500 ${disabled && 'cursor-default'}`}
         disabled={disabled}
       />
       <ErrorMessage
@@ -27,18 +27,20 @@ export const FormikFields = ({ value, type, disabled }: IFormikFieldsProps) => {
 interface IFormikTextAreaProps {
   value: string;
   placeholder: string;
+  label?: string;
   disabled?: boolean;
 }
 
 export const FormikTextArea = ({
   value,
   placeholder,
+  label,
   disabled,
 }: IFormikTextAreaProps) => {
   return (
     <div className="flex flex-col">
       <label htmlFor={value} className="capitalize">
-        {value}
+        {label ?? value}
       </label>
       <div className="relative">
         <Field
@@ -46,7 +48,7 @@ export const FormikTextArea = ({
           id={value}
           name={value}
           placeholder={placeholder}
-          className={`mb-4 min-h-50 w-80 resize-none rounded-md border-2 bg-white p-3 text-xl text-black outline-hidden duration-300 ${
+          className={`mb-4 min-h-32 w-full resize-none rounded-md border border-gray-300 bg-white p-3 text-lg text-black outline-hidden duration-300 focus:border-blue-500 ${
             disabled && 'cursor-default'
           } `}
           disabled={disabled}
