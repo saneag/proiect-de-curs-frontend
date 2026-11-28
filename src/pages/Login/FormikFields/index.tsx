@@ -42,7 +42,7 @@ export const FormikFields = ({
             field.onChange(e);
             setEditedSinceSubmit(true);
           }}
-          className={`w-full rounded-md bg-cyan-900 p-3 text-xl text-white shadow-md shadow-cyan-700/50 outline-hidden duration-300 hover:shadow-cyan-700 focus:shadow-cyan-700 ${isPassword ? 'pr-12' : ''}`}
+          className={`w-full rounded-md bg-cyan-900 p-3 text-xl text-white shadow-sm outline-hidden duration-300 hover:shadow-md focus:shadow-md ${isPassword ? 'pr-12' : ''}`}
         />
         {isPassword && hasValue && (
           <button

@@ -67,7 +67,7 @@ const Login = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="rounded-2xl bg-white max-sm:w-full sm:w-8/12 md:w-6/12 xl:w-4/12"
+        className="rounded-2xl bg-white shadow-2xl shadow-sky-400/40 max-sm:w-full sm:w-8/12 md:w-6/12 xl:w-4/12"
       >
         <Formik
           initialValues={{
@@ -84,7 +84,7 @@ const Login = () => {
           }}
         >
           {({ setErrors, resetForm }) => (
-            <Form className="flex size-full flex-col flex-wrap content-center justify-center rounded-2xl border-b-4 border-l-4 border-gray-500 py-4 shadow-md shadow-gray-600">
+            <Form className="flex size-full flex-col flex-wrap content-center justify-center rounded-2xl py-6">
               {isRegister && (
                 <FormikFields value={'firstName'} placeholder={'John'} />
               )}
@@ -123,13 +123,13 @@ const Login = () => {
               <div className="flex justify-around">
                 <button
                   type="submit"
-                  className="w-5/12 self-center rounded-full border-b-4 border-blue-900 bg-linear-to-r from-blue-500 to-blue-800 p-2 text-xl text-white shadow-md shadow-blue-500 hover:bg-linear-to-br"
+                  className="w-5/12 self-center rounded-full border-b-4 border-blue-900 bg-linear-to-r from-blue-500 to-blue-800 p-2 text-xl text-white shadow-lg shadow-blue-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none"
                 >
                   {isRegister ? 'Register' : 'Login'}
                 </button>
                 <button
                   type="button"
-                  className={`w-5/12 self-center rounded-full border-b-4 border-green-900 bg-linear-to-l from-green-500 to-green-800 p-2 text-xl text-white hover:bg-linear-to-bl ${
+                  className={`w-5/12 self-center rounded-full border-b-4 border-green-900 bg-linear-to-l from-green-500 to-green-800 p-2 text-xl text-white shadow-lg shadow-green-900/25 transition-[translate,border-width,box-shadow] duration-75 active:translate-y-1 active:border-b-0 active:shadow-none ${
                     isRegister
                       ? 'border-yellow-900 from-yellow-500 ' + 'to-yellow-800'
                       : ''
