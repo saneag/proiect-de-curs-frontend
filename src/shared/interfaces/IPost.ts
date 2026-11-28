@@ -14,7 +14,6 @@ export interface IPostImage extends IPost {
 export interface IPostLikeComment extends IPost {
   reactions: IPostReaction[];
   comments: IComment[];
-  tags: string[];
   numberOfLikes: number;
   numberOfDislikes: number;
   numberOfComments: number;

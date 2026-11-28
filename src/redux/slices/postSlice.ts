@@ -131,18 +131,24 @@ export const createPostWithImage = createAsyncThunk(
   },
 );
 
-export const updatePost = createAsyncThunk(
-  'post/updatePost',
-  async (content: string) => {
+export const editPost = createAsyncThunk(
+  'post/editPost',
+  async (
+    {
+      postId,
+      title,
+      content,
+      image,
+    }: { postId: string; title: string; content: string; image: string },
+    { rejectWithValue },
+  ) => {
     try {
-      const response = await axios.patch('/update-post', { content });
-      return response.data;
+      await axios.patch(`/update-post/${postId}`, { title, content, image });
+      return { status: 200 };
     } catch (error) {
-      if (isAxiosError(error)) {
-        return {};
-      }
-
-      return {};
+      return rejectWithValue({
+        status: isAxiosError(error) ? error.response?.status : 500,
+      });
     }
   },
 );
@@ -260,10 +266,6 @@ const postSlice = createSlice({
       state.status = action.payload.status;
     });
     builder.addCase(createPostWithImage.fulfilled, (state, action) => {
-      state.status = action.payload.status;
-    });
-    builder.addCase(updatePost.fulfilled, (state, action) => {
-      state.posts = action.payload.posts;
       state.status = action.payload.status;
     });
     builder.addCase(deletePost.fulfilled, (state, action) => {

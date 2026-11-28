@@ -9,8 +9,10 @@ import {
   createBasicPost,
   createPostWithImage,
   deletePostImage,
+  editPost,
   setPostCreated,
 } from 'redux/slices/postSlice';
+import { type IPostExtended } from 'shared/interfaces/IPost';
 
 import ImageRenderer from 'components/ImageRenderer';
 import { getPlainTextLength } from 'utils/postText';
@@ -21,14 +23,16 @@ const MAX_CONTENT_LENGTH = 1000;
 
 interface IProps {
   setIsAddPostFormOpen: (isAddPostFormOpen: boolean) => void;
+  post?: IPostExtended;
 }
 
-const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
+const PostForm = ({ setIsAddPostFormOpen, post }: IProps) => {
+  const isEdit = post !== undefined;
   const dispatch = useAppDispatch();
 
-  const [title, setTitle] = React.useState<string>('');
-  const [content, setContent] = React.useState<string>('');
-  const [image, setImage] = React.useState<string>('');
+  const [title, setTitle] = React.useState<string>(post?.title ?? '');
+  const [content, setContent] = React.useState<string>(post?.content ?? '');
+  const [image, setImage] = React.useState<string>(post?.image ?? '');
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
 
   const fileTypes = ['JPG', 'PNG', 'JPEG'];
@@ -50,6 +54,18 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
+    if (isEdit) {
+      const result = await dispatch(
+        editPost({ postId: post.id, title, content, image }),
+      );
+      if (editPost.fulfilled.match(result) && post.image !== image) {
+        if (post.image) await dispatch(deletePostImage(post.image));
+      }
+      setIsAddPostFormOpen(false);
+      dispatch(setPostCreated(true));
+      return;
+    }
+
     if (image !== '') {
       await dispatch(createPostWithImage({ title, content, image }));
     } else {
@@ -60,14 +76,18 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
   };
 
   const handleRemoveImage = async () => {
-    await dispatch(deletePostImage(image));
+    if (image !== post?.image) await dispatch(deletePostImage(image));
     setImage('');
   };
 
   const handleChangeFile = async (e: File | File[]) => {
     const file = Array.isArray(e) ? e[0] : e;
     const formData = new FormData();
-    if (image && file.name !== image.split('uploads/')[1]) {
+    if (
+      image &&
+      image !== post?.image &&
+      file.name !== image.split('uploads/')[1]
+    ) {
       await dispatch(deletePostImage(image));
     }
     formData.append('postImage', file);
@@ -89,7 +109,7 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="new-post-heading"
+        aria-labelledby="post-form-heading"
         initial={{ opacity: 0, scale: 0.96, y: 8 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 8 }}
@@ -99,10 +119,10 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
       >
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
           <h2
-            id="new-post-heading"
+            id="post-form-heading"
             className="text-xl font-semibold text-gray-900"
           >
-            New post
+            {isEdit ? 'Edit post' : 'New post'}
           </h2>
           <button
             type="button"
@@ -168,7 +188,13 @@ const PostForm = ({ setIsAddPostFormOpen }: IProps) => {
             disabled={!canSubmit}
             onClick={handleSubmit}
           >
-            {isSubmitting ? 'Posting…' : 'Post'}
+            {isSubmitting
+              ? isEdit
+                ? 'Saving…'
+                : 'Posting…'
+              : isEdit
+                ? 'Save'
+                : 'Post'}
           </button>
         </div>
       </motion.div>

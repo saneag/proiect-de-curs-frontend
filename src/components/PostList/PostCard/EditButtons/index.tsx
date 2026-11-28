@@ -1,91 +1,96 @@
 import React from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+
 import { useAppDispatch } from 'redux/store';
 import { deletePost, setPostCreated } from 'redux/slices/postSlice';
-
-interface ButtonProps {
-  type: string;
-  name?: string;
-  className?: string;
-  onClick?: () => void;
-}
+import { type IPostExtended } from 'shared/interfaces/IPost';
+import PostForm from '../../AddPost/PostForm';
 
 interface EditButtonsProps {
-  postId: string;
+  post: IPostExtended;
 }
 
-const EditButtons = ({ postId }: EditButtonsProps) => {
+const itemClass =
+  'flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition';
+
+const EditButtons = ({ post }: EditButtonsProps) => {
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [showEditButtons, setShowEditButtons] = React.useState(false);
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-
-  const handleDeletePost = async () => {
-    setShowEditButtons(false);
-    await dispatch(deletePost(postId));
+  const handleDelete = async () => {
+    setIsOpen(false);
+    await dispatch(deletePost(post.id));
     dispatch(setPostCreated(true));
   };
 
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as HTMLButtonElement) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as HTMLDivElement)
-      ) {
-        setShowEditButtons(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [buttonRef]);
-
   return (
-    <div className="relative">
-      <Button
-        type="more_vert"
-        className="text-gray-600 drop-shadow-xs"
-        onClick={() => setShowEditButtons(!showEditButtons)}
-        ref={buttonRef}
-      />
-      {showEditButtons && (
+    <div className="relative" ref={containerRef}>
+      <button
+        type="button"
+        aria-label="Post options"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        className="flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <MoreHorizontal className="size-5" />
+      </button>
+      {isOpen && (
         <div
-          className="absolute top-6.25 right-0 flex items-center gap-2 rounded-2xl bg-neutral-200 px-3 py-1"
-          ref={dropdownRef}
+          role="menu"
+          className="absolute top-full right-0 z-20 mt-1 w-40 rounded-xl border border-gray-200 bg-white p-1 shadow-lg"
         >
-          {/*<Button*/}
-          {/*    type="edit"*/}
-          {/*    className="text-blue-600 drop-shadow"*/}
-          {/*    name="Edit"*/}
-          {/*/>*/}
-          <Button
-            type="delete"
-            className="text-red-500 drop-shadow-xs"
-            name="Delete"
-            onClick={handleDeletePost}
-          />
+          <button
+            type="button"
+            role="menuitem"
+            className={`${itemClass} text-gray-700 hover:bg-gray-100`}
+            onClick={() => {
+              setIsOpen(false);
+              setIsEditing(true);
+            }}
+          >
+            <Pencil className="size-4" />
+            Edit
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className={`${itemClass} text-red-600 hover:bg-red-50`}
+            onClick={handleDelete}
+          >
+            <Trash2 className="size-4" />
+            Delete
+          </button>
         </div>
       )}
+      <AnimatePresence>
+        {isEditing && (
+          <PostForm setIsAddPostFormOpen={setIsEditing} post={post} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ type, name = '', className, onClick }, ref) => {
-    return (
-      <button className={`${className} p-0.5`} onClick={onClick} ref={ref}>
-        <span className="material-symbols-outlined block">{type}</span>
-        {name && <span className="block text-xs">{name}</span>}
-      </button>
-    );
-  },
-);
-Button.displayName = 'Button';
 
 export default EditButtons;

@@ -11,6 +11,11 @@ const CardHeader = () => {
   const { userPost } = React.useContext(PostContext);
   const profileLink = `/userProfile/${userPost.creator.email}`;
 
+  const isEdited =
+    new Date(userPost.updatedAt).getTime() -
+      new Date(userPost.createdAt).getTime() >
+    1000;
+
   return (
     <div className="flex items-center gap-3 px-4 pt-4">
       <Link to={profileLink} className="shrink-0">
@@ -30,11 +35,19 @@ const CardHeader = () => {
         </Link>
         <span className="text-sm text-gray-600">
           {convertDate(userPost.createdAt)}
+          {isEdited && (
+            <span
+              className="ml-1.5 text-gray-500 italic"
+              title={'Edited ' + convertDate(userPost.updatedAt)}
+            >
+              · Edited
+            </span>
+          )}
         </span>
       </div>
       {userPost.creatorId === user.id && (
         <div className="shrink-0">
-          <EditButtons postId={userPost.id} />
+          <EditButtons post={userPost} />
         </div>
       )}
     </div>
