@@ -86,10 +86,10 @@ const Login = () => {
           {({ setErrors, resetForm }) => (
             <Form className="flex size-full flex-col flex-wrap content-center justify-center rounded-2xl border-b-4 border-l-4 border-gray-500 py-4 shadow-md shadow-gray-600">
               {isRegister && (
-                <FormikFields value={'firstName'} placeholder={'firstname'} />
+                <FormikFields value={'firstName'} placeholder={'John'} />
               )}
               {isRegister && (
-                <FormikFields value={'lastName'} placeholder={'lastname'} />
+                <FormikFields value={'lastName'} placeholder={'Doe'} />
               )}
               <FormikFields
                 value={'email'}
@@ -97,13 +97,13 @@ const Login = () => {
               />
               <FormikFields
                 value={'password'}
-                placeholder={'password'}
+                placeholder={isRegister ? 'At least 6 characters' : 'password'}
                 type={'password'}
               />
               {isRegister && (
                 <FormikFields
                   value={'confirmPassword'}
-                  placeholder={'confirm password'}
+                  placeholder={'Repeat your password'}
                   type={'password'}
                 />
               )}
