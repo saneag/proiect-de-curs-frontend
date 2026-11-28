@@ -61,7 +61,7 @@ const RightSidebar = () => {
                   {person.firstName} {person.lastName}
                 </span>
                 <Link
-                  to={`/userProfile/${person.email}`}
+                  to={`/userProfile/${person.id}`}
                   className="shrink-0 rounded-full border border-blue-600 px-3 py-1 text-sm font-medium text-blue-600 transition hover:bg-blue-600 hover:text-white"
                 >
                   View profile

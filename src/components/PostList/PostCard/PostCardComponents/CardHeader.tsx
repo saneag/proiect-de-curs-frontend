@@ -9,7 +9,7 @@ import { convertDate } from 'utils/convertDate';
 const CardHeader = () => {
   const user = useAppSelector((state) => state.userReducer.user);
   const { userPost } = React.useContext(PostContext);
-  const profileLink = `/userProfile/${userPost.creator.email}`;
+  const profileLink = `/userProfile/${userPost.creatorId}`;
 
   const isEdited =
     new Date(userPost.updatedAt).getTime() -

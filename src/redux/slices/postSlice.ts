@@ -8,15 +8,15 @@ type Post = {
   limit: number;
   page: number;
   search: string;
-  email?: string;
+  creatorId?: string;
 };
 
 export const getPosts = createAsyncThunk(
   'post/getPosts',
-  async ({ limit, page, search, email = '' }: Post) => {
+  async ({ limit, page, search, creatorId }: Post) => {
     try {
       const response = await axios.get(
-        `/get-posts?limit=${limit}&page=${page}&search=${encodeURIComponent(search)}&email=${encodeURIComponent(email)}`,
+        `/get-posts?limit=${limit}&page=${page}&search=${encodeURIComponent(search)}${creatorId ? `&creatorId=${encodeURIComponent(creatorId)}` : ''}`,
       );
 
       return {

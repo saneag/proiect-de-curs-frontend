@@ -137,11 +137,11 @@ export const getUser = createAsyncThunk('auth/getUser', async () => {
   }
 });
 
-export const getUserByEmail = createAsyncThunk(
-  'user/getUserByEmail',
-  async (email: string) => {
+export const getUserById = createAsyncThunk(
+  'user/getUserById',
+  async (id: string) => {
     try {
-      const response = await axios.get(`/user/${email}`);
+      const response = await axios.get(`/user/${encodeURIComponent(id)}`);
       return {
         visitedUser: response.data,
       };
@@ -257,7 +257,10 @@ export const userSlice = createSlice({
         state.isAuthenticated = action.payload.isAuthenticated;
       },
     );
-    builder.addCase(getUserByEmail.fulfilled, (state, action) => {
+    builder.addCase(getUserById.pending, (state) => {
+      state.visitedUser = {} as IUserResponse;
+    });
+    builder.addCase(getUserById.fulfilled, (state, action) => {
       state.visitedUser = action.payload.visitedUser;
     });
     builder.addCase(logout.fulfilled, (state, action) => {

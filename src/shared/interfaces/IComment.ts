@@ -2,7 +2,7 @@ import { type IUserImage } from './IUser';
 
 export interface IComment {
   postId: string;
-  userId: string;
+  creatorId: string;
   content: string;
   creator: IUserImage;
   createdAt: string;

@@ -13,14 +13,14 @@ import SearchPost from '../SearchPost';
 interface IPostList {
   children?: React.ReactNode;
   className?: string;
-  // Author to list posts for. Falls back to the `:email` route param.
-  email?: string;
+  // Author to list posts for. Falls back to the `:id` route param.
+  creatorId?: string;
 }
 
-const PostList = ({ children, className, email: authorEmail }: IPostList) => {
+const PostList = ({ children, className, creatorId: authorId }: IPostList) => {
   const dispatch = useAppDispatch();
   const params = useParams();
-  const email = authorEmail ?? params.email;
+  const creatorId = authorId ?? params.id;
 
   const posts = useAppSelector((state) => state.postReducer.posts);
   const totalPostsNumber = useAppSelector(
@@ -36,21 +36,23 @@ const PostList = ({ children, className, email: authorEmail }: IPostList) => {
     async (limit = 10) => {
       try {
         dispatch(resetPosts());
-        await dispatch(getPosts({ limit, page: 1, search, email }));
+        await dispatch(getPosts({ limit, page: 1, search, creatorId }));
       } catch (error) {
         console.error(error);
       }
     },
-    [dispatch, search, email],
+    [dispatch, search, creatorId],
   );
 
   const fetchMorePosts = React.useCallback(async () => {
     try {
-      await dispatch(getPosts({ limit: 10, page: page + 1, search, email }));
+      await dispatch(
+        getPosts({ limit: 10, page: page + 1, search, creatorId }),
+      );
     } catch (error) {
       console.error(error);
     }
-  }, [dispatch, page, search, email]);
+  }, [dispatch, page, search, creatorId]);
 
   React.useEffect(() => {
     fetchPosts();

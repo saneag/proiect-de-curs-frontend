@@ -62,7 +62,7 @@ const LeftSidebar = () => {
           <House className="size-5" />
           Home
         </NavLink>
-        <NavLink to={`/myPosts/${user.email}`} className={linkClass}>
+        <NavLink to={`/myPosts/${user.id}`} className={linkClass}>
           <FileText className="size-5" />
           My posts
         </NavLink>

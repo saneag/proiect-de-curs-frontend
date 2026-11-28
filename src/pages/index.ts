@@ -4,6 +4,7 @@ import Login from './Login';
 import UserProfile from './UserProfile';
 import UserProfileAsGuest from './UserProfile/UserProfileAsGuest';
 import MyPosts from './MyPosts';
+import NotFound from './NotFound';
 
 export const Pages = {
   Home,
@@ -12,4 +13,5 @@ export const Pages = {
   UserProfile,
   UserProfileAsGuest,
   MyPosts,
+  NotFound,
 };

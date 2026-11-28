@@ -1,49 +1,39 @@
 import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from 'redux/store';
+import { getUserById } from 'redux/slices/userSlice';
 import { Components } from 'components';
-import { useParams } from 'react-router';
-import { getUserByEmail } from '../../redux/slices/userSlice';
+
+import NotFound from '../NotFound';
+import ProfileHeader from './ProfileHeader';
 
 const UserProfileAsGuest = () => {
   const dispatch = useAppDispatch();
-  const { email } = useParams();
+  const { id } = useParams();
+
+  const me = useAppSelector((state) => state.userReducer.user);
+  const visitedUser = useAppSelector((state) => state.userReducer.visitedUser);
+  const [loadedId, setLoadedId] = React.useState<string>();
 
   React.useEffect(() => {
-    dispatch(getUserByEmail(email as string));
-  }, [dispatch, email]);
+    if (!id || id === me.id) return;
+    dispatch(getUserById(id)).finally(() => setLoadedId(id));
+  }, [dispatch, id, me.id]);
 
-  const user = useAppSelector((state) => state.userReducer.visitedUser);
+  if (id === me.id) return <Navigate to="/userProfile" replace />;
+  if (loadedId !== id) return null;
+  if (visitedUser.id !== id) return <NotFound />;
 
   return (
-    <div className="my-4 grid grid-cols-1 justify-items-center gap-y-6 px-4 md:grid-cols-3 md:gap-3 md:px-0">
-      <div className="flex w-full flex-col gap-3 self-start md:sticky md:top-20 md:w-8/12">
-        <Components.ImageRenderer
-          imageUrl={user.avatarUrl}
-          type={'userAvatar'}
-          alt={'userAvatar'}
-          className={'mx-auto size-32 rounded-full text-9xl'}
+    <div className="mx-auto my-6 flex w-full max-w-2xl flex-col gap-8 px-4">
+      <ProfileHeader user={visitedUser} />
+      <div>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">Posts</h2>
+        <Components.PostList
+          creatorId={visitedUser.id}
+          className="max-w-none"
         />
-        <div className="flex flex-col rounded-xl bg-gray-400 px-4 py-3">
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold">Firstname </span>
-            <span className="text-xl">{user.firstName}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold">Lastname</span>
-            <span className="text-xl">{user.lastName}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold">Email</span>
-            <span className="text-xl">{user.email}</span>
-          </div>
-          <span className="text-2xl font-bold">Description</span>
-          <span className="text-xl">
-            {user.description !== '' ? user.description : 'No description yet.'}
-          </span>
-        </div>
-      </div>
-      <div className="col-span-2 w-full">
-        <Components.PostList />
       </div>
     </div>
   );

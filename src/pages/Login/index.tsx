@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Form, Formik, type FormikHelpers } from 'formik';
 import { LoaderCircle } from 'lucide-react';
 import { useAppDispatch } from 'redux/store';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { login, register, resetStatus } from 'redux/slices/userSlice';
 import { type IUserRegister } from 'shared/interfaces/IUser';
@@ -23,6 +23,8 @@ const Login = () => {
   const [responseStatus, setResponseStatus] = React.useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? '/';
 
   const handleClick = (
     setErrorsCallback: FormikHelpers<IUserRegister>['setErrors'],
@@ -54,7 +56,7 @@ const Login = () => {
       }
     }
 
-    navigate('/');
+    navigate(redirectTo, { replace: true });
     setIsRegister(false);
   };
 
